@@ -1,16 +1,14 @@
 import React from "react";
 
-import Header from "../header/header";
-import TodoList from "../todo-list/todo-list";
-import AddTask from "../add-task/add-task";
+import Product from "../product/product";
 
 function App() {
 
     return (
         <div>
-            <Header />
-            <TodoList />
-            <AddTask />
+            <Product name="Bananas"
+                     price="1$"
+                     description="Fresh bananas from Ecuador" />
         </div>
     )
 }

@@ -7,7 +7,7 @@ function App() {
     return (
         <div>
             <Product name="Bananas"
-                     price="1$"
+                     price="3$"
                      description="Fresh bananas from Ecuador" />
         </div>
     )

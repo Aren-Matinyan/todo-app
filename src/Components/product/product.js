@@ -7,11 +7,14 @@ import Description from "../description/description";
 export default class Product extends Component {
 
     render() {
+
+        const {name, price, description} = this.props
+
         return (
             <div>
-                <Name name ={this.props.name}/>
-                <Price price = {this.props.price}/>
-                <Description description = {this.props.description}/>
+                <Name name ={name}/>
+                <Price price = {price}/>
+                <Description description = {description}/>
             </div>
         )
     }

@@ -11,17 +11,18 @@ export default class Price extends Component {
 
     onChangeCurrency = () => {
 
-        const {price} = this.state
+        let {price} = this.state
+        const realPrice = parseFloat(price)
 
-        if (price[price.length - 1] === "$") {
-            this.setState({
-                price: price.slice(0, price.length - 1) * 500 + "֏"
-            })
+        if (price.includes("$")) {
+            price = realPrice * 500 + "֏"
         } else {
-            this.setState({
-                price: price.slice(0, price.length - 1) / 500 + "$"
-            })
+            price = realPrice / 500 + "$"
         }
+
+        this.setState({
+            price: price
+        })
     }
 
     render() {

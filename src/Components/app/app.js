@@ -1,52 +1,58 @@
 import React, {Component} from "react";
 
-// import Product from "../../Homework-Product/product/product";
-
 import AddItem from "../add-item/add-item";
 import TodoList from "../todo-list/todo-list";
 import AppHeader from "../app-header/app-header";
 
+import './app.css';
 
 export default class App extends Component {
 
     id = 100
 
     state = {
-        tasks: [
-            this.createItem('Learn JavaScript'),
-            this.createItem('Learn React'),
-            this.createItem('Do homework')
-        ]
+        tasks: []
     }
 
-    createItem (text) {
+    createTask (text) {
         return {
             taskName: text,
-            id: this.id++
+            id: this.id++,
         }
     }
 
-    addItem = (text) => {
-        const newItem = this.createItem(text)
-        const newArr = [...this.state.tasks, newItem]
+    addTask = (text) => {
+
+        if(!text.trim()){
+            return;
+        }
+
+        const newTask = this.createTask(text)
+        const newArr = [...this.state.tasks, newTask]
         this.setState({
             tasks: newArr,
         })
     }
 
+    deleteTask = (id) => {
+        const index = this.state.tasks.findIndex((el) => el.id === id)
+        const newArr = [
+            ...this.state.tasks.slice(0,index),
+            ...this.state.tasks.slice(index + 1)
+        ]
+        this.setState({
+            tasks: newArr
+        })
+    }
+
     render() {
         return (
-            <>
+            <div className='todo-app'>
                 <AppHeader/>
-                <TodoList tasks={this.state.tasks}/>
-                <AddItem addItem={this.addItem}/>
-            </>
-
-            // <div>
-            //     <Product name="Bananas"
-            //              price="3$"
-            //              description="Fresh bananas from Ecuador" />
-            // </div>
+                <TodoList tasks={this.state.tasks}
+                          deleteTask={this.deleteTask}/>
+                <AddItem addTask={this.addTask}/>
+            </div>
         )
     }
 }

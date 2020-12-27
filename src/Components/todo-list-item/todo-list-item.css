@@ -1,0 +1,9 @@
+.todo-task {
+    margin-left: 1.25rem;
+    line-height: 35px;
+    cursor: pointer;
+}
+
+.done {
+    text-decoration: line-through;
+}

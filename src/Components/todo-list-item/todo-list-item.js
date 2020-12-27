@@ -1,15 +1,42 @@
-import React from 'react'
+import React, {Component} from 'react'
 
-const TodoListItem = ({tasks}) => {
+import './todo-list-item.css'
 
-    return (
-        tasks.map((item) => {
-            return (
-                <li key={item.id}>
-                    {item.taskName}
-                </li>)
+export default class TodoListItem extends Component {
+
+    state = {
+        done: false
+    }
+
+    doneTask = () => {
+        this.setState(() => {
+            return {
+                done: !this.state.done
+            }
         })
-    )
-}
+    }
 
-export default TodoListItem
+    render() {
+
+        const {task, deleteTask} = this.props
+        const {done} = this.state
+
+        let classNames = 'todo-task'
+
+        if (done) {
+            classNames += ' done'
+        }
+
+        return (
+            <span className={classNames}
+                  onClick={this.doneTask}>
+                  {task.taskName}
+
+                <button onClick={deleteTask}
+                        className='btn btn-outline-success btn-sm float-right'>
+                        Delete
+                  </button>
+            </span>
+        )
+    }
+}

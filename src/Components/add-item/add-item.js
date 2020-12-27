@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 
+import './add-item.css'
+
 export default class AddItem extends Component {
 
     state = {
@@ -13,7 +15,7 @@ export default class AddItem extends Component {
     }
 
     onClick = () =>{
-        this.props.addItem(this.state.inputValue)
+        this.props.addTask(this.state.inputValue)
         this.setState({
             inputValue: ''
         })
@@ -21,16 +23,18 @@ export default class AddItem extends Component {
 
     render() {
         return (
-            <>
+            <div className="add-item d-flex">
                 <input type="text"
                        placeholder='Add task...'
+                       className='form-control'
                        onChange={this.handleChange}
                        value={this.state.inputValue}/>
 
-                <button onClick={this.onClick }>
+                <button onClick={this.onClick}
+                        className='btn btn-outline-secondary'>
                     Click to add
                 </button>
-            </>
+            </div>
         )
     }
 }

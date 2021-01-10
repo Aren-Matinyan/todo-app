@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 
-import './add-item.css'
+import styles from './add-item.module.css'
+import {Button, Form} from "react-bootstrap";
 
 export default class AddItem extends Component {
 
@@ -23,18 +24,17 @@ export default class AddItem extends Component {
 
     render() {
         return (
-            <div className="add-item d-flex">
-                <input type="text"
-                       placeholder='Add task...'
-                       className='form-control'
-                       onChange={this.handleChange}
-                       value={this.state.inputValue}/>
+            <Form className={`${styles.addItem} d-flex`}>
+                <Form.Control type="text" placeholder="Add task..."
+                              variant='form-control'
+                              onChange={this.handleChange}
+                              value={this.state.inputValue}/>
 
-                <button onClick={this.onClick}
-                        className='btn btn-outline-secondary'>
+                <Button onClick={this.onClick}
+                        variant='btn btn-outline-secondary'>
                     Click to add
-                </button>
-            </div>
+                </Button>
+            </Form>
         )
     }
 }

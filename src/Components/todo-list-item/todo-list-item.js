@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 
-import './todo-list-item.css'
+import {Button} from 'react-bootstrap'
+
+import styles from './todo-list-item.module.css'
 
 export default class TodoListItem extends Component {
 
@@ -21,21 +23,15 @@ export default class TodoListItem extends Component {
         const {task, deleteTask} = this.props
         const {done} = this.state
 
-        let classNames = 'todo-task'
-
-        if (done) {
-            classNames += ' done'
-        }
-
         return (
-            <span className={classNames}
+            <span className={ done ? `${styles.todoTask} ${styles.done}` : styles.todoTask}
                   onClick={this.doneTask}>
                   {task.taskName}
 
-                <button onClick={deleteTask}
-                        className='btn btn-outline-success btn-sm float-right'>
+                <Button onClick={deleteTask}
+                        variant='btn btn-outline-success btn-sm float-right'>
                         Delete
-                  </button>
+                </Button>
             </span>
         )
     }

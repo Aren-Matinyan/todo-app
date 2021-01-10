@@ -1,7 +1,8 @@
-.todo-task {
+.todoTask {
     margin-left: 1.25rem;
     line-height: 35px;
     cursor: pointer;
+    user-select: none;
 }
 
 .done {

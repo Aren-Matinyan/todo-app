@@ -3,8 +3,9 @@ import React, {Component} from "react";
 import AddItem from "../add-item/add-item";
 import TodoList from "../todo-list/todo-list";
 import AppHeader from "../app-header/app-header";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-import './app.css';
+import styles from './app.module.css';
 
 export default class App extends Component {
 
@@ -35,11 +36,7 @@ export default class App extends Component {
     }
 
     deleteTask = (id) => {
-        const index = this.state.tasks.findIndex((el) => el.id === id)
-        const newArr = [
-            ...this.state.tasks.slice(0,index),
-            ...this.state.tasks.slice(index + 1)
-        ]
+        const newArr = this.state.tasks.filter(el => el.id !== id)
         this.setState({
             tasks: newArr
         })
@@ -47,7 +44,7 @@ export default class App extends Component {
 
     render() {
         return (
-            <div className='todo-app'>
+            <div className={styles.todoApp}>
                 <AppHeader/>
                 <TodoList tasks={this.state.tasks}
                           deleteTask={this.deleteTask}/>

@@ -1,11 +1,11 @@
 import React from 'react'
 
-import './app-header.css'
+import styles from './app-header.module.css'
 
 const AppHeader = () => {
 
     return (
-        <h1 className='app-header'>
+        <h1 className={styles.appHeader}>
             ToDo List
         </h1>
     )

@@ -1,11 +1,11 @@
-.add-item {
+.addItem {
     margin-top: 10px;
 }
 
-.add-item input {
+.addItem input {
     margin-right: 3px;
 }
 
-.add-item button {
+.addItem button {
     white-space: nowrap;
 }

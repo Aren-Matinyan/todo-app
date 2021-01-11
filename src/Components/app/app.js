@@ -3,40 +3,44 @@ import React, {Component} from "react";
 import AddItem from "../add-item/add-item";
 import TodoList from "../todo-list/todo-list";
 import AppHeader from "../app-header/app-header";
+
+import {Container} from "react-bootstrap";
+import moment from "moment";
+import {v4 as uuidv4} from 'uuid';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import styles from './app.module.css';
 
 export default class App extends Component {
 
-    id = 100
-
     state = {
         tasks: []
     }
 
-    createTask (text) {
+    createTask(text, description) {
         return {
             taskName: text,
-            id: this.id++,
+            _id: uuidv4(),
+            description: description,
+            created: moment().format('D MMM, YYYY')
         }
     }
 
-    addTask = (text) => {
+    addTask = (text, description) => {
 
-        if(!text.trim()){
+        if (!text.trim()) {
             return;
         }
 
-        const newTask = this.createTask(text)
+        const newTask = this.createTask(text, description)
         const newArr = [...this.state.tasks, newTask]
         this.setState({
             tasks: newArr,
         })
     }
 
-    deleteTask = (id) => {
-        const newArr = this.state.tasks.filter(el => el.id !== id)
+    deleteTask = (taskId) => {
+        const newArr = this.state.tasks.filter(el => el._id !== taskId)
         this.setState({
             tasks: newArr
         })
@@ -46,9 +50,11 @@ export default class App extends Component {
         return (
             <div className={styles.todoApp}>
                 <AppHeader/>
-                <TodoList tasks={this.state.tasks}
-                          deleteTask={this.deleteTask}/>
-                <AddItem addTask={this.addTask}/>
+                <Container>
+                    <AddItem addTask={this.addTask}/>
+                    <TodoList tasks={this.state.tasks}
+                              deleteTask={this.deleteTask}/>
+                </Container>
             </div>
         )
     }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-import {Button, Form, Row, Col} from "react-bootstrap"
+import {Button, Form, Row, Col, InputGroup} from "react-bootstrap"
 import styles from './add-item.module.css'
 
 export default class AddItem extends Component {
@@ -30,28 +30,34 @@ export default class AddItem extends Component {
         })
     }
 
+    handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            this.onClick()
+        }
+    }
+
     render() {
         return (
             <Row className={"justify-content-center"}>
-                <Col xs={8}>
-                    <Form className={styles.addItem}>
-                        <div className="d-flex">
-                            <Form.Control type="text"
-                                          placeholder="What needs to be done?"
-                                          variant='form-control'
-                                          onChange={this.handleChange}
-                                          value={this.state.inputValue}/>
+                <Col xs={8} className={styles.addItem}>
+                    <InputGroup className="d-flex">
+                        <Form.Control placeholder="What needs to be done?"
+                                      onChange={this.handleChange}
+                                      value={this.state.inputValue}
+                                      disabled={!!this.props.selectedTask.size}
+                                      onKeyDown={this.handleKeyDown}
+                        />
 
-                            <Button onClick={this.onClick}
-                                    variant='outline-success'>
-                                Click to add
-                            </Button>
-                        </div>
-                        <Form.Control as="textarea" rows={3}
-                                      onChange={this.descriptionChange}
-                                      value={this.state.description}
-                                      className={styles.textarea}/>
-                    </Form>
+                        <Button onClick={this.onClick}
+                                disabled={!!this.props.selectedTask.size}
+                                variant='outline-success'>
+                            Click to add
+                        </Button>
+                    </InputGroup>
+                    <Form.Control as="textarea" rows={3}
+                                  onChange={this.descriptionChange}
+                                  value={this.state.description}
+                                  className={styles.textarea}/>
                 </Col>
             </Row>
         )

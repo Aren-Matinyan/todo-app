@@ -4,7 +4,7 @@ import AddItem from "../add-item/add-item";
 import TodoList from "../todo-list/todo-list";
 import AppHeader from "../app-header/app-header";
 
-import {Container} from "react-bootstrap";
+import {Container, Button} from "react-bootstrap";
 import moment from "moment";
 import {v4 as uuidv4} from 'uuid';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -14,7 +14,8 @@ import styles from './app.module.css';
 export default class App extends Component {
 
     state = {
-        tasks: []
+        tasks: [],
+        selectedTask: new Set()
     }
 
     createTask(text, description) {
@@ -39,6 +40,18 @@ export default class App extends Component {
         })
     }
 
+    checkItem = (itemId) => {
+        const selectedTask = new Set(this.state.selectedTask)
+        if (selectedTask.has(itemId)) {
+            selectedTask.delete(itemId)
+        } else {
+            selectedTask.add(itemId)
+        }
+        this.setState({
+            selectedTask
+        })
+    }
+
     deleteTask = (taskId) => {
         const newArr = this.state.tasks.filter(el => el._id !== taskId)
         this.setState({
@@ -46,16 +59,32 @@ export default class App extends Component {
         })
     }
 
+    removeSelected = () => {
+        const {selectedTask, tasks} = this.state
+        const newTask = tasks.filter((task) => !selectedTask.has(task._id))
+
+        this.setState({
+            tasks: newTask,
+            selectedTask: new Set()
+        })
+    }
+
     render() {
         return (
-            <div className={styles.todoApp}>
+            <Container className={styles.todoApp}>
                 <AppHeader/>
-                <Container>
-                    <AddItem addTask={this.addTask}/>
-                    <TodoList tasks={this.state.tasks}
-                              deleteTask={this.deleteTask}/>
-                </Container>
-            </div>
+                <AddItem addTask={this.addTask}
+                         selectedTask={this.state.selectedTask}/>
+                <TodoList tasks={this.state.tasks}
+                          selectedTask={this.state.selectedTask}
+                          checkItem={this.checkItem}
+                          deleteTask={this.deleteTask}/>
+                <Button variant="outline-danger float-right"
+                        disabled={!this.state.selectedTask.size}
+                        onClick={this.removeSelected}>
+                    Remove selected
+                </Button>
+            </Container>
         )
     }
 }

@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 
-import AddItem from "../add-item/add-item";
 import TodoList from "../todo-list/todo-list";
 import AppHeader from "../app-header/app-header";
 import Confirm from "../confirm/confirm";
+import AddTaskModalWindow from "../add-task-modal-window/add-task-modal-window";
 
 import {Container, Button} from "react-bootstrap";
 import moment from "moment";
@@ -83,8 +83,8 @@ export default class App extends Component {
             <>
                 <Container className={styles.todoApp}>
                     <AppHeader/>
-                    <AddItem addTask={this.addTask}
-                             selectedTask={this.state.selectedTask}/>
+                    <AddTaskModalWindow addTask={this.addTask}
+                                        selectedTask={this.state.selectedTask}/>
                     <TodoList tasks={this.state.tasks}
                               selectedTask={this.state.selectedTask}
                               checkItem={this.checkItem}

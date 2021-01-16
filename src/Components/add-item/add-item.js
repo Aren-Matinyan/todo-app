@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 
 import PropTypes from 'prop-types'
-import {Button, Form, Row, Col, InputGroup} from "react-bootstrap"
-import styles from './add-item.module.css'
+import {Button, Form, InputGroup, Modal} from "react-bootstrap"
+// import styles from './add-item.module.css'
 
 export default class AddItem extends Component {
 
@@ -23,49 +23,68 @@ export default class AddItem extends Component {
         })
     }
 
-    onClick = () => {
+    onSubmit = () => {
         this.props.addTask(this.state.inputValue, this.state.description)
-        this.setState({
-            inputValue: '',
-            description: ''
-        })
+        this.onCancel()
     }
 
     handleKeyDown = (event) => {
         if (event.key === "Enter") {
-            this.onClick()
+            this.onSubmit()
         }
     }
 
+    onCancel = () => {
+        this.props.onHide()
+        this.setState({
+            inputValue: '',
+            description: '',
+        })
+    }
+
     render() {
+
         return (
-            <Row className={"justify-content-center"}>
-                <Col xs={8} className={styles.addItem}>
-                    <InputGroup className="d-flex">
+            <Modal
+                show={this.props.show}
+                onHide={this.onCancel}
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+                <Modal.Header closeButton>
+                    <InputGroup>
                         <Form.Control placeholder="What needs to be done?"
                                       onChange={this.handleChange}
                                       value={this.state.inputValue}
-                                      disabled={!!this.props.selectedTask.size}
                                       onKeyDown={this.handleKeyDown}
                         />
-
-                        <Button onClick={this.onClick}
-                                disabled={!!this.props.selectedTask.size}
-                                variant='outline-success'>
-                            Click to add
-                        </Button>
                     </InputGroup>
+                </Modal.Header>
+
+                <Modal.Body>
                     <Form.Control as="textarea" rows={3}
+                                  placeholder="Description"
                                   onChange={this.descriptionChange}
-                                  value={this.state.description}
-                                  className={styles.textarea}/>
-                </Col>
-            </Row>
+                                  value={this.state.description}/>
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <Button onClick={this.onSubmit}
+                            variant='outline-success'>
+                        Add
+                    </Button>
+                    <Button onClick={this.onCancel}
+                            variant='outline-primary'>Cancel</Button>
+                </Modal.Footer>
+            </Modal>
         )
     }
 }
 
 AddItem.propTypes = {
+    show: PropTypes.bool.isRequired,
+    onHide: PropTypes.func.isRequired,
     addTask: PropTypes.func.isRequired,
-    selectedTask: PropTypes.object.isRequired
+    selectedTask: PropTypes.object.isRequired,
 }

@@ -24,7 +24,7 @@ export default class TodoListItem extends Component {
         const {done} = this.state
 
         return (
-            <Card border={done ? "danger" : "primary"} className={styles.todoCard}>
+            <Card border={selectedTask.has(task._id) ? "danger" : "success"} className={styles.todoCard}>
                 <Card.Body>
                     <input type="checkbox"
                            onChange={this.props.checkItem}/>

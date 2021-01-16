@@ -1,12 +1,13 @@
 import React, {Component} from 'react'
 
+import {Button, Form, Row, Col} from "react-bootstrap"
 import styles from './add-item.module.css'
-import {Button, Form} from "react-bootstrap";
 
 export default class AddItem extends Component {
 
     state = {
-        inputValue: ''
+        inputValue: '',
+        description: ''
     }
 
     handleChange = (event) => {
@@ -15,26 +16,44 @@ export default class AddItem extends Component {
         })
     }
 
-    onClick = () =>{
-        this.props.addTask(this.state.inputValue)
+    descriptionChange = (event) => {
         this.setState({
-            inputValue: ''
+            description: event.target.value
+        })
+    }
+
+    onClick = () => {
+        this.props.addTask(this.state.inputValue, this.state.description)
+        this.setState({
+            inputValue: '',
+            description: ''
         })
     }
 
     render() {
         return (
-            <Form className={`${styles.addItem} d-flex`}>
-                <Form.Control type="text" placeholder="Add task..."
-                              variant='form-control'
-                              onChange={this.handleChange}
-                              value={this.state.inputValue}/>
+            <Row className={"justify-content-center"}>
+                <Col xs={8}>
+                    <Form className={styles.addItem}>
+                        <div className="d-flex">
+                            <Form.Control type="text"
+                                          placeholder="What needs to be done?"
+                                          variant='form-control'
+                                          onChange={this.handleChange}
+                                          value={this.state.inputValue}/>
 
-                <Button onClick={this.onClick}
-                        variant='btn btn-outline-secondary'>
-                    Click to add
-                </Button>
-            </Form>
+                            <Button onClick={this.onClick}
+                                    variant='outline-success'>
+                                Click to add
+                            </Button>
+                        </div>
+                        <Form.Control as="textarea" rows={3}
+                                      onChange={this.descriptionChange}
+                                      value={this.state.description}
+                                      className={styles.textarea}/>
+                    </Form>
+                </Col>
+            </Row>
         )
     }
 }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-import {Button, Card, Form} from 'react-bootstrap'
+import {Button, Card} from 'react-bootstrap'
 
 import styles from './todo-list-item.module.css'
 
@@ -20,14 +20,14 @@ export default class TodoListItem extends Component {
 
     render() {
 
-        const {task, deleteTask} = this.props
+        const {task, deleteTask, selectedTask} = this.props
         const {done} = this.state
 
         return (
             <Card border={done ? "danger" : "primary"} className={styles.todoCard}>
-                <Form.Check type="checkbox"
-                            className={styles.checkbox}/>
                 <Card.Body>
+                    <input type="checkbox"
+                           onChange={this.props.checkItem}/>
                     <Card.Title
                         className={done ? `${styles.todoTask} ${styles.done}` : styles.todoTask}
                         onClick={this.doneTask}>{task.taskName}</Card.Title>
@@ -35,6 +35,7 @@ export default class TodoListItem extends Component {
                     <Card.Text> Status: {done ? "Done" : "Active"} </Card.Text>
                     <Card.Text> Created: {task.created} </Card.Text>
                     <Button onClick={deleteTask}
+                            disabled={!!selectedTask.size}
                             variant='outline-danger float-right'>
                         Delete
                     </Button>

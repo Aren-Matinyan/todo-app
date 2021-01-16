@@ -1,7 +1,7 @@
 import React from 'react'
 
 import TodoListItem from "../todo-list-item/todo-list-item"
-
+import PropTypes from 'prop-types'
 import {Row, Col} from 'react-bootstrap'
 import styles from './todo-list.module.css'
 
@@ -24,6 +24,13 @@ const TodoList = ({tasks, deleteTask, checkItem, selectedTask}) => {
             {elements}
         </Row>
     )
+}
+
+TodoList.propTypes = {
+    tasks: PropTypes.array.isRequired,
+    selectedTask: PropTypes.object.isRequired,
+    checkItem: PropTypes.func.isRequired,
+    deleteTask: PropTypes.func.isRequired
 }
 
 export default TodoList

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 
 import {Button, Card} from 'react-bootstrap'
-
+import PropTypes from 'prop-types'
 import styles from './todo-list-item.module.css'
 
 export default class TodoListItem extends Component {
@@ -43,4 +43,11 @@ export default class TodoListItem extends Component {
             </Card>
         )
     }
+}
+
+TodoListItem.propTypes = {
+    task: PropTypes.object.isRequired,
+    checkItem: PropTypes.func.isRequired,
+    deleteTask: PropTypes.func.isRequired,
+    selectedTask: PropTypes.object.isRequired
 }

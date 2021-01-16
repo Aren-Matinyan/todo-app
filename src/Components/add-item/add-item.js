@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 
+import PropTypes from 'prop-types'
 import {Button, Form, Row, Col, InputGroup} from "react-bootstrap"
 import styles from './add-item.module.css'
 
@@ -62,4 +63,9 @@ export default class AddItem extends Component {
             </Row>
         )
     }
+}
+
+AddItem.propTypes = {
+    addTask: PropTypes.func.isRequired,
+    selectedTask: PropTypes.object.isRequired
 }

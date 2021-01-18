@@ -1,8 +1,9 @@
 import React, {Component} from "react";
 
-import AddItem from "../add-item/add-item";
 import TodoList from "../todo-list/todo-list";
 import AppHeader from "../app-header/app-header";
+import Confirm from "../confirm/confirm";
+import AddTaskModalWindow from "../add-task-modal-window/add-task-modal-window";
 
 import {Container, Button} from "react-bootstrap";
 import moment from "moment";
@@ -15,7 +16,8 @@ export default class App extends Component {
 
     state = {
         tasks: [],
-        selectedTask: new Set()
+        selectedTask: new Set(),
+        showConfirm: false
     }
 
     createTask(text, description) {
@@ -65,26 +67,38 @@ export default class App extends Component {
 
         this.setState({
             tasks: newTask,
-            selectedTask: new Set()
+            selectedTask: new Set(),
+            showConfirm: false
+        })
+    }
+
+    toggleConfirm = () => {
+        this.setState({
+            showConfirm: !this.state.showConfirm
         })
     }
 
     render() {
         return (
-            <Container className={styles.todoApp}>
-                <AppHeader/>
-                <AddItem addTask={this.addTask}
-                         selectedTask={this.state.selectedTask}/>
-                <TodoList tasks={this.state.tasks}
-                          selectedTask={this.state.selectedTask}
-                          checkItem={this.checkItem}
-                          deleteTask={this.deleteTask}/>
-                <Button variant="outline-danger float-right"
-                        disabled={!this.state.selectedTask.size}
-                        onClick={this.removeSelected}>
-                    Remove selected
-                </Button>
-            </Container>
+            <>
+                <Container className={styles.todoApp}>
+                    <AppHeader/>
+                    <AddTaskModalWindow addTask={this.addTask}
+                                        selectedTask={this.state.selectedTask}/>
+                    <TodoList tasks={this.state.tasks}
+                              selectedTask={this.state.selectedTask}
+                              checkItem={this.checkItem}
+                              deleteTask={this.deleteTask}/>
+                    <Button variant="outline-danger float-right"
+                            disabled={!this.state.selectedTask.size}
+                            onClick={this.toggleConfirm}>
+                        Remove selected
+                    </Button>
+                </Container>
+                {this.state.showConfirm && <Confirm onClose={this.toggleConfirm}
+                                                    onConfirm={this.removeSelected}
+                                                    count={this.state.selectedTask.size}/>}
+            </>
         )
     }
 }

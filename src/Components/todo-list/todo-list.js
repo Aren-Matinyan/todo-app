@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import {Row, Col} from 'react-bootstrap'
 import styles from './todo-list.module.css'
 
-const TodoList = ({tasks, deleteTask, checkItem, selectedTask}) => {
+const TodoList = ({tasks, deleteTask, checkItem, selectedTask, editedTask}) => {
 
     const elements = tasks.map((item) => {
         return (
@@ -14,7 +14,8 @@ const TodoList = ({tasks, deleteTask, checkItem, selectedTask}) => {
                 <TodoListItem task={item}
                               checkItem={() => checkItem(item._id)}
                               deleteTask={() => deleteTask(item._id)}
-                              selectedTask={selectedTask}/>
+                              selectedTask={selectedTask}
+                              editedTask={editedTask}/>
             </Col>
         )
     })

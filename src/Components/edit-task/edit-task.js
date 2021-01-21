@@ -11,15 +11,9 @@ export default class EditTask extends Component {
         description: this.props.editTask.description
     }
 
-    handleChange = (event) => {
+    handleChange = (event, propName) => {
         this.setState({
-            inputValue: event.target.value
-        })
-    }
-
-    descriptionChange = (event) => {
-        this.setState({
-            description: event.target.value
+            [propName]: event.target.value
         })
     }
 
@@ -55,7 +49,7 @@ export default class EditTask extends Component {
                 <Modal.Header closeButton>
                     <InputGroup>
                         <Form.Control placeholder="What needs to be done?"
-                                      onChange={this.handleChange}
+                                      onChange={(event) => this.handleChange(event, "inputValue")}
                                       value={this.state.inputValue}
                                       onKeyDown={this.handleKeyDown}
                         />
@@ -65,7 +59,7 @@ export default class EditTask extends Component {
                 <Modal.Body>
                     <Form.Control as="textarea" rows={3}
                                   placeholder="Description"
-                                  onChange={this.descriptionChange}
+                                  onChange={(event) => this.handleChange(event, "description")}
                                   value={this.state.description}/>
                 </Modal.Body>
 
@@ -86,4 +80,6 @@ EditTask.propTypes = {
     show: PropTypes.bool.isRequired,
     onHide: PropTypes.func.isRequired,
     selectedTask: PropTypes.object.isRequired,
+    editTask: PropTypes.object.isRequired,
+    editedTask: PropTypes.func.isRequired
 }

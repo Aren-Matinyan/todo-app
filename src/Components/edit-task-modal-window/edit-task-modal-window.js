@@ -33,5 +33,6 @@ export default EditTaskModalWindow
 
 EditTaskModalWindow.propTypes = {
     editTask: PropTypes.object.isRequired,
+    editedTask: PropTypes.func.isRequired,
     selectedTask: PropTypes.object.isRequired
 }

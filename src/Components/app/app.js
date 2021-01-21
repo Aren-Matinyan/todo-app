@@ -4,8 +4,9 @@ import TodoList from "../todo-list/todo-list";
 import AppHeader from "../app-header/app-header";
 import Confirm from "../confirm/confirm";
 import AddTaskModalWindow from "../add-task-modal-window/add-task-modal-window";
+import SearchTask from "../search-task/search-task";
 
-import {Container, Button} from "react-bootstrap";
+import {Button, Container} from "react-bootstrap";
 import moment from "moment";
 import {v4 as uuid4} from 'uuid';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,14 +18,17 @@ export default class App extends Component {
     state = {
         tasks: [],
         selectedTask: new Set(),
-        showConfirm: false
+        showConfirm: false,
+        searchValue: ''
     }
 
     createTask(text, description) {
+        const title = text.trim()
+        const desc = description.trim()
         return {
-            taskName: text,
+            taskName: title,
             _id: uuid4(),
-            description: description,
+            description: desc,
             created: moment().format('D MMM, YYYY')
         }
     }
@@ -95,24 +99,39 @@ export default class App extends Component {
         if (!value.trim()) {
             return;
         }
+        const tasks = [...this.state.tasks]
         const idx = this.state.tasks.findIndex((el) => el._id === id);
-        const editedItem = this.createTask(value, description)
-        this.setState({
-            tasks: [
-                ...this.state.tasks.slice(0, idx),
-                editedItem,
-                ...this.state.tasks.slice(idx + 1)
-            ]
-        })
+        tasks[idx] = this.createTask(value, description)
+        this.setState({tasks})
+    }
+
+    search = (tasks, value) => {
+        if (!value.trim) {
+            return tasks
+        }
+
+        return tasks.filter((task) => task
+            .taskName.toLowerCase()
+            .includes(value.toLowerCase()))
+    }
+
+    onTaskSearch = (searchValue) => {
+        this.setState({searchValue})
     }
 
     render() {
+
+        const {tasks, searchValue, showConfirm, selectedTask} = this.state
+
+        const visibleTasks = this.search(tasks, searchValue)
+
         return (
             <>
                 <Container className={styles.todoApp}>
                     <AppHeader/>
+                    <SearchTask onTaskSearch={this.onTaskSearch}/>
                     <AddTaskModalWindow addTask={this.addTask}
-                                        selectedTask={this.state.selectedTask}/>
+                                        selectedTask={selectedTask}/>
 
                     <Button variant='outline-warning'
                             className='float-right'
@@ -121,20 +140,20 @@ export default class App extends Component {
                             className='float-right mr-2'
                             onClick={this.selectAll}>Select all</Button>
 
-                    <TodoList tasks={this.state.tasks}
-                              selectedTask={this.state.selectedTask}
+                    <TodoList tasks={visibleTasks}
+                              selectedTask={selectedTask}
                               checkItem={this.checkItem}
                               deleteTask={this.deleteTask}
                               editedTask={this.editedTask}/>
                     <Button variant="outline-danger float-right"
-                            disabled={!this.state.selectedTask.size}
+                            disabled={!selectedTask.size}
                             onClick={this.toggleConfirm}>
                         Remove selected
                     </Button>
                 </Container>
-                {this.state.showConfirm && <Confirm onClose={this.toggleConfirm}
-                                                    onConfirm={this.removeSelected}
-                                                    count={this.state.selectedTask.size}/>}
+                {showConfirm && <Confirm onClose={this.toggleConfirm}
+                                         onConfirm={this.removeSelected}
+                                         count={selectedTask.size}/>}
             </>
         )
     }

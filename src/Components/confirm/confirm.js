@@ -20,7 +20,7 @@ function Confirm({onClose, onConfirm, count}) {
             </Modal.Header>
             <Modal.Footer>
                 <Button onClick={onConfirm}
-                        variant="outline-danger">Delete</Button>
+                        variant="outline-danger">Ok</Button>
                 <Button onClick={onClose}
                         variant="outline-success">Cancel</Button>
             </Modal.Footer>

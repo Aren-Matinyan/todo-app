@@ -7,7 +7,7 @@ import AddTaskModalWindow from "../add-task-modal-window/add-task-modal-window";
 
 import {Container, Button} from "react-bootstrap";
 import moment from "moment";
-import {v4 as uuidv4} from 'uuid';
+import {v4 as uuid4} from 'uuid';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import styles from './app.module.css';
@@ -23,7 +23,7 @@ export default class App extends Component {
     createTask(text, description) {
         return {
             taskName: text,
-            _id: uuidv4(),
+            _id: uuid4(),
             description: description,
             created: moment().format('D MMM, YYYY')
         }
@@ -78,6 +78,34 @@ export default class App extends Component {
         })
     }
 
+    selectAll = () => {
+        const selectAll = this.state.tasks.map((task) => task._id)
+        this.setState({
+            selectedTask: new Set(selectAll)
+        })
+    }
+
+    deSelectAll = () => {
+        this.setState({
+            selectedTask: new Set()
+        })
+    }
+
+    editedTask = (value, description, id) => {
+        if (!value.trim()) {
+            return;
+        }
+        const idx = this.state.tasks.findIndex((el) => el._id === id);
+        const editedItem = this.createTask(value, description)
+        this.setState({
+            tasks: [
+                ...this.state.tasks.slice(0, idx),
+                editedItem,
+                ...this.state.tasks.slice(idx + 1)
+            ]
+        })
+    }
+
     render() {
         return (
             <>
@@ -85,10 +113,19 @@ export default class App extends Component {
                     <AppHeader/>
                     <AddTaskModalWindow addTask={this.addTask}
                                         selectedTask={this.state.selectedTask}/>
+
+                    <Button variant='outline-warning'
+                            className='float-right'
+                            onClick={this.deSelectAll}>Deselect all</Button>
+                    <Button variant='outline-warning'
+                            className='float-right mr-2'
+                            onClick={this.selectAll}>Select all</Button>
+
                     <TodoList tasks={this.state.tasks}
                               selectedTask={this.state.selectedTask}
                               checkItem={this.checkItem}
-                              deleteTask={this.deleteTask}/>
+                              deleteTask={this.deleteTask}
+                              editedTask={this.editedTask}/>
                     <Button variant="outline-danger float-right"
                             disabled={!this.state.selectedTask.size}
                             onClick={this.toggleConfirm}>

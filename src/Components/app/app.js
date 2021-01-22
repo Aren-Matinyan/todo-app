@@ -7,6 +7,7 @@ import AddTaskModalWindow from "../add-task-modal-window/add-task-modal-window";
 import SearchTask from "../search-task/search-task";
 import EditTask from "../edit-task/edit-task";
 import Progress from "../progress/progress";
+import StatusFilter from "../status-filter/status-filter";
 
 import {Button, Container, Row, Col} from "react-bootstrap";
 import moment from "moment";
@@ -23,6 +24,7 @@ export default class App extends Component {
         showConfirm: false,
         searchValue: '',
         taskForEdit: null,
+        statusFilter: 'All'
     }
 
     createTask(text, description) {
@@ -131,15 +133,32 @@ export default class App extends Component {
     toggleDone = (id) => {
         const tasks = [...this.state.tasks]
         const idx = tasks.findIndex((task) => task._id === id)
-        tasks[idx] = {...tasks[idx], done: !tasks[idx].done }
+        tasks[idx] = {...tasks[idx], done: !tasks[idx].done}
         this.setState({tasks})
+    }
+
+    statusFilter = (tasks, filter) => {
+        switch (filter) {
+            case "All":
+                return tasks
+            case "Active":
+                return tasks.filter((task) => !task.done)
+            case "Done":
+                return tasks.filter((task) => task.done)
+            default:
+                return tasks
+        }
+    }
+
+    changeFilter = (statusFilter) => {
+        this.setState({statusFilter})
     }
 
     render() {
 
-        const {tasks, searchValue, showConfirm, selectedTask, taskForEdit} = this.state
+        const {tasks, searchValue, showConfirm, selectedTask, taskForEdit, statusFilter} = this.state
 
-        const visibleTasks = this.search(tasks, searchValue)
+        const visibleTasks = this.statusFilter(this.search(tasks, searchValue), statusFilter)
 
         return (
             <>
@@ -152,7 +171,12 @@ export default class App extends Component {
                             <Progress tasks={tasks}/>
                         </Col>
                     </Row>
-                    <SearchTask onTaskSearch={this.onTaskSearch}/>
+                    <div className='d-flex '>
+                        <SearchTask onTaskSearch={this.onTaskSearch}/>
+                        <StatusFilter statusFilter={statusFilter}
+                                      changeFilter={this.changeFilter}/>
+                    </div>
+
                     <AddTaskModalWindow addTask={this.addTask}
                                         selectedTask={selectedTask}/>
 

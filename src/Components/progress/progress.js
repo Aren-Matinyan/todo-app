@@ -11,11 +11,13 @@ const Progress = ({tasks}) => {
         <>
             <ProgressBar variant="info"
                          now={tasks.length ? percent : 0}
-                         label={`Done ${percent.toFixed(1)}%`}
+                         label={`Done ${doneCount} 
+                                      (${percent.toFixed(1)}%)`}
                          className='m-1'/>
             <ProgressBar variant="warning"
                          now={tasks.length ? 100 - percent : 0}
-                         label={`Active ${(100 - percent).toFixed(1)}%`}
+                         label={`Active ${tasks.length - doneCount} 
+                                        (${(100 - percent).toFixed(1)}%)`}
                          className='m-1'/>
         </>
     )

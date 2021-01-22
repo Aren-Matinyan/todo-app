@@ -24,7 +24,7 @@ export default class SearchTask extends Component {
 
     render() {
         return (
-            <InputGroup className="mb-3">
+            <InputGroup className="mb-3 mr-2">
                 <Form.Control
                     placeholder="Search..."
                     value={this.state.changedValue}

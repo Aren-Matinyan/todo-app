@@ -6,8 +6,9 @@ import Confirm from "../confirm/confirm";
 import AddTaskModalWindow from "../add-task-modal-window/add-task-modal-window";
 import SearchTask from "../search-task/search-task";
 import EditTask from "../edit-task/edit-task";
+import Progress from "../progress/progress";
 
-import {Button, Container} from "react-bootstrap";
+import {Button, Container, Row, Col} from "react-bootstrap";
 import moment from "moment";
 import {v4 as uuid4} from 'uuid';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -21,7 +22,7 @@ export default class App extends Component {
         selectedTask: new Set(),
         showConfirm: false,
         searchValue: '',
-        taskForEdit: null
+        taskForEdit: null,
     }
 
     createTask(text, description) {
@@ -127,6 +128,13 @@ export default class App extends Component {
         this.setState({searchValue})
     }
 
+    toggleDone = (id) => {
+        const tasks = [...this.state.tasks]
+        const idx = tasks.findIndex((task) => task._id === id)
+        tasks[idx] = {...tasks[idx], done: !tasks[idx].done }
+        this.setState({tasks})
+    }
+
     render() {
 
         const {tasks, searchValue, showConfirm, selectedTask, taskForEdit} = this.state
@@ -136,7 +144,14 @@ export default class App extends Component {
         return (
             <>
                 <Container className={styles.todoApp}>
-                    <AppHeader/>
+                    <Row>
+                        <Col>
+                            <AppHeader/>
+                        </Col>
+                        <Col>
+                            <Progress tasks={tasks}/>
+                        </Col>
+                    </Row>
                     <SearchTask onTaskSearch={this.onTaskSearch}/>
                     <AddTaskModalWindow addTask={this.addTask}
                                         selectedTask={selectedTask}/>
@@ -152,7 +167,8 @@ export default class App extends Component {
                               selectedTask={selectedTask}
                               checkItem={this.checkItem}
                               deleteTask={this.deleteTask}
-                              editTask={this.editTask}/>
+                              editTask={this.editTask}
+                              toggleDone={this.toggleDone}/>
                     <Button variant="outline-danger float-right"
                             disabled={!selectedTask.size}
                             onClick={this.toggleConfirm}>

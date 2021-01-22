@@ -8,21 +8,8 @@ import styles from './todo-list-item.module.css'
 
 export default class TodoListItem extends Component {
 
-    state = {
-        done: false
-    }
-
-    doneTask = () => {
-        this.setState(() => {
-            return {
-                done: !this.state.done,
-            }
-        })
-    }
-
     render() {
-        const {task, deleteTask, selectedTask, editTask, checkItem} = this.props
-        const {done} = this.state
+        const {task, deleteTask, selectedTask, editTask, checkItem, toggleDone} = this.props
 
         return (
             <Card border={selectedTask.has(task._id) ? "danger" : "success"} className={styles.todoCard}>
@@ -31,10 +18,11 @@ export default class TodoListItem extends Component {
                            onChange={checkItem}
                            checked={selectedTask.has(task._id)}/>
                     <Card.Title
-                        className={done ? `${styles.todoTask} ${styles.done}` : styles.todoTask}
-                        onClick={this.doneTask}>{task.taskName}</Card.Title>
+                        className={task.done ? `${styles.todoTask} ${styles.done}` : styles.todoTask}>
+                        {task.taskName}
+                    </Card.Title>
                     <Card.Text> Description: {task.description} </Card.Text>
-                    <Card.Text> Status: {done ? "Done" : "Active"} </Card.Text>
+                    <Card.Text> Status: {task.done ? "Done" : "Active"} </Card.Text>
                     <Card.Text> Created: {task.created} </Card.Text>
                     <Button onClick={deleteTask}
                             disabled={!!selectedTask.size}
@@ -50,7 +38,8 @@ export default class TodoListItem extends Component {
                     </Button>
 
                     <Button disabled={!!selectedTask.size}
-                            variant='outline-success float-right'>
+                            variant='outline-success float-right'
+                            onClick={toggleDone}>
                         <FontAwesomeIcon icon={faCheckCircle}/>
                     </Button>
                 </Card.Body>
@@ -64,5 +53,6 @@ TodoListItem.propTypes = {
     checkItem: PropTypes.func.isRequired,
     deleteTask: PropTypes.func.isRequired,
     selectedTask: PropTypes.object.isRequired,
-    editTask: PropTypes.func.isRequired
+    editTask: PropTypes.func.isRequired,
+    toggleDone:PropTypes.func.isRequired
 }

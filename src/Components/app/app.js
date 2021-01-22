@@ -5,6 +5,7 @@ import AppHeader from "../app-header/app-header";
 import Confirm from "../confirm/confirm";
 import AddTaskModalWindow from "../add-task-modal-window/add-task-modal-window";
 import SearchTask from "../search-task/search-task";
+import EditTask from "../edit-task/edit-task";
 
 import {Button, Container} from "react-bootstrap";
 import moment from "moment";
@@ -19,7 +20,8 @@ export default class App extends Component {
         tasks: [],
         selectedTask: new Set(),
         showConfirm: false,
-        searchValue: ''
+        searchValue: '',
+        taskForEdit: null
     }
 
     createTask(text, description) {
@@ -29,7 +31,8 @@ export default class App extends Component {
             taskName: title,
             _id: uuid4(),
             description: desc,
-            created: moment().format('D MMM, YYYY')
+            created: moment().format('D MMM, YYYY'),
+            done: false
         }
     }
 
@@ -95,15 +98,20 @@ export default class App extends Component {
         })
     }
 
-    editedTask = (value, description, id) => {
-        if (!value.trim()) {
-            return;
-        }
-        const tasks = [...this.state.tasks]
-        const idx = this.state.tasks.findIndex((el) => el._id === id);
-        tasks[idx] = this.createTask(value, description)
-        this.setState({tasks})
+    editTask = (taskForEdit) => {
+        this.setState({taskForEdit})
     }
+
+    saveEditedTask = (editedTask) => {
+        const tasks = [...this.state.tasks];
+        const idx = tasks.findIndex((task) => task._id === editedTask._id);
+        tasks[idx] = editedTask;
+
+        this.setState({
+            tasks,
+            taskForEdit: null
+        });
+    };
 
     search = (tasks, value) => {
         if (!value.trim) {
@@ -121,7 +129,7 @@ export default class App extends Component {
 
     render() {
 
-        const {tasks, searchValue, showConfirm, selectedTask} = this.state
+        const {tasks, searchValue, showConfirm, selectedTask, taskForEdit} = this.state
 
         const visibleTasks = this.search(tasks, searchValue)
 
@@ -144,7 +152,7 @@ export default class App extends Component {
                               selectedTask={selectedTask}
                               checkItem={this.checkItem}
                               deleteTask={this.deleteTask}
-                              editedTask={this.editedTask}/>
+                              editTask={this.editTask}/>
                     <Button variant="outline-danger float-right"
                             disabled={!selectedTask.size}
                             onClick={this.toggleConfirm}>
@@ -154,7 +162,11 @@ export default class App extends Component {
                 {showConfirm && <Confirm onClose={this.toggleConfirm}
                                          onConfirm={this.removeSelected}
                                          count={selectedTask.size}/>}
+                {taskForEdit && <EditTask taskForEdit={taskForEdit}
+                                          onSave={this.saveEditedTask}
+                                          onClose={() => this.editTask(null)}/>}
             </>
         )
     }
+
 }

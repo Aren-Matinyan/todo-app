@@ -3,9 +3,8 @@ import React, {Component} from 'react'
 import {Button, Card} from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faTrashAlt} from '@fortawesome/free-solid-svg-icons'
+import {faTrashAlt, faCheckCircle, faEdit} from '@fortawesome/free-solid-svg-icons'
 import styles from './todo-list-item.module.css'
-import EditTaskModalWindow from "../edit-task-modal-window/edit-task-modal-window";
 
 export default class TodoListItem extends Component {
 
@@ -22,15 +21,14 @@ export default class TodoListItem extends Component {
     }
 
     render() {
-
-        const {task, deleteTask, selectedTask, editedTask} = this.props
+        const {task, deleteTask, selectedTask, editTask, checkItem} = this.props
         const {done} = this.state
 
         return (
             <Card border={selectedTask.has(task._id) ? "danger" : "success"} className={styles.todoCard}>
                 <Card.Body>
                     <input type="checkbox"
-                           onChange={this.props.checkItem}
+                           onChange={checkItem}
                            checked={selectedTask.has(task._id)}/>
                     <Card.Title
                         className={done ? `${styles.todoTask} ${styles.done}` : styles.todoTask}
@@ -43,9 +41,18 @@ export default class TodoListItem extends Component {
                             variant='outline-danger float-right'>
                         <FontAwesomeIcon icon={faTrashAlt}/>
                     </Button>
-                    <EditTaskModalWindow editTask={task}
-                                         selectedTask={selectedTask}
-                                         editedTask={editedTask}/>
+
+                    <Button variant="outline-warning float-right"
+                            disabled={!!selectedTask.size}
+                            className="mr-2 ml-2"
+                            onClick={editTask}>
+                        <FontAwesomeIcon icon={faEdit}/>
+                    </Button>
+
+                    <Button disabled={!!selectedTask.size}
+                            variant='outline-success float-right'>
+                        <FontAwesomeIcon icon={faCheckCircle}/>
+                    </Button>
                 </Card.Body>
             </Card>
         )
@@ -56,5 +63,6 @@ TodoListItem.propTypes = {
     task: PropTypes.object.isRequired,
     checkItem: PropTypes.func.isRequired,
     deleteTask: PropTypes.func.isRequired,
-    selectedTask: PropTypes.object.isRequired
+    selectedTask: PropTypes.object.isRequired,
+    editTask: PropTypes.func.isRequired
 }

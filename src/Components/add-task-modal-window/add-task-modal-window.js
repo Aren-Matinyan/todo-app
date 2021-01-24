@@ -2,6 +2,8 @@ import React from "react";
 
 import AddItem from "../add-item/add-item";
 import {Button} from "react-bootstrap";
+import {faPlus} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
 
 function AddTaskModalWindow({addTask, selectedTask}) {
@@ -12,7 +14,7 @@ function AddTaskModalWindow({addTask, selectedTask}) {
             <Button variant="outline-primary"
                     disabled={!!selectedTask.size}
                     onClick={() => setModalShow(true)}>
-                Add task
+                <FontAwesomeIcon icon={faPlus}/> Add task
             </Button>
 
             <AddItem

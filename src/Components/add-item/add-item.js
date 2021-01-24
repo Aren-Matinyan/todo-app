@@ -44,6 +44,8 @@ export default class AddItem extends Component {
 
     render() {
 
+        const {inputValue, description} = this.state
+
         return (
             <Modal
                 show={this.props.show}
@@ -56,7 +58,7 @@ export default class AddItem extends Component {
                     <InputGroup>
                         <Form.Control placeholder="What needs to be done?"
                                       onChange={this.handleChange}
-                                      value={this.state.inputValue}
+                                      value={inputValue}
                                       onKeyDown={this.handleKeyDown}
                         />
                     </InputGroup>
@@ -66,7 +68,7 @@ export default class AddItem extends Component {
                     <Form.Control as="textarea" rows={3}
                                   placeholder="Description"
                                   onChange={this.descriptionChange}
-                                  value={this.state.description}/>
+                                  value={description}/>
                 </Modal.Body>
 
                 <Modal.Footer>

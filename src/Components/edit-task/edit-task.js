@@ -1,31 +1,30 @@
 import React, {Component} from 'react'
 
 import PropTypes from 'prop-types'
-import {Button, Form, InputGroup, Modal} from "react-bootstrap"
-// import styles from './add-item.module.css'
+import {Button, Form, Modal} from "react-bootstrap"
 
 export default class EditTask extends Component {
 
-    state = {
-        inputValue: this.props.editTask.taskName,
-        description: this.props.editTask.description
-    }
+    state = {...this.props.taskForEdit}
 
-    handleChange = (event) => {
+    handleChange = (event, propName) => {
         this.setState({
-            inputValue: event.target.value
-        })
-    }
-
-    descriptionChange = (event) => {
-        this.setState({
-            description: event.target.value
+            [propName]: event.target.value
         })
     }
 
     onSubmit = () => {
-        this.props.editedTask(this.state.inputValue, this.state.description, this.props.editTask._id)
-        this.onCancel()
+        const title = this.state.taskName.trim()
+        const description = this.state.description.trim()
+        if (!title) {
+            return
+        }
+        this.props.onSave({
+            ...this.state,
+            _id: this.state._id,
+            taskName: title,
+            description,
+        })
     }
 
     handleKeyDown = (event) => {
@@ -34,47 +33,40 @@ export default class EditTask extends Component {
         }
     }
 
-    onCancel = () => {
-        this.props.onHide()
-        this.setState({
-            inputValue: this.props.editTask.taskName,
-            description: this.props.editTask.description,
-        })
-    }
-
     render() {
-
+        const {taskName, description} = this.state;
+        const {onClose} = this.props
         return (
             <Modal
-                show={this.props.show}
-                onHide={this.onCancel}
+                show={true}
+                onHide={onClose}
                 size="lg"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
             >
                 <Modal.Header closeButton>
-                    <InputGroup>
-                        <Form.Control placeholder="What needs to be done?"
-                                      onChange={this.handleChange}
-                                      value={this.state.inputValue}
-                                      onKeyDown={this.handleKeyDown}
-                        />
-                    </InputGroup>
+                    <Modal.Title id="contained-modal-title-vcenter">
+                        Edit Task
+                    </Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
+                    <Form.Control placeholder="What needs to be done?"
+                                  onChange={(event) => this.handleChange(event, "taskName")}
+                                  onKeyDown={this.handleKeyDown}
+                                  value={taskName}
+                                  className='mb-3'/>
+
                     <Form.Control as="textarea" rows={3}
                                   placeholder="Description"
-                                  onChange={this.descriptionChange}
-                                  value={this.state.description}/>
+                                  onChange={(event) => this.handleChange(event, "description")}
+                                  value={description}/>
                 </Modal.Body>
 
                 <Modal.Footer>
                     <Button onClick={this.onSubmit}
-                            variant='outline-success'>
-                        Edit
-                    </Button>
-                    <Button onClick={this.onCancel}
+                            variant='outline-success'>Edit</Button>
+                    <Button onClick={onClose}
                             variant='outline-primary'>Cancel</Button>
                 </Modal.Footer>
             </Modal>
@@ -83,7 +75,7 @@ export default class EditTask extends Component {
 }
 
 EditTask.propTypes = {
-    show: PropTypes.bool.isRequired,
-    onHide: PropTypes.func.isRequired,
-    selectedTask: PropTypes.object.isRequired,
+    taskForEdit: PropTypes.object.isRequired,
+    onSave: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired
 }

@@ -4,8 +4,12 @@ import TodoList from "../todo-list/todo-list";
 import AppHeader from "../app-header/app-header";
 import Confirm from "../confirm/confirm";
 import AddTaskModalWindow from "../add-task-modal-window/add-task-modal-window";
+import SearchTask from "../search-task/search-task";
+import EditTask from "../edit-task/edit-task";
+import Progress from "../progress/progress";
+import StatusFilter from "../status-filter/status-filter";
 
-import {Container, Button} from "react-bootstrap";
+import {Button, Container, Row, Col} from "react-bootstrap";
 import moment from "moment";
 import {v4 as uuid4} from 'uuid';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,15 +21,21 @@ export default class App extends Component {
     state = {
         tasks: [],
         selectedTask: new Set(),
-        showConfirm: false
+        showConfirm: false,
+        searchValue: '',
+        taskForEdit: null,
+        statusFilter: 'All'
     }
 
     createTask(text, description) {
+        const title = text.trim()
+        const desc = description.trim()
         return {
-            taskName: text,
+            taskName: title,
             _id: uuid4(),
-            description: description,
-            created: moment().format('D MMM, YYYY')
+            description: desc,
+            created: moment().format('D MMM, YYYY'),
+            done: false
         }
     }
 
@@ -91,28 +101,84 @@ export default class App extends Component {
         })
     }
 
-    editedTask = (value, description, id) => {
-        if (!value.trim()) {
-            return;
-        }
-        const idx = this.state.tasks.findIndex((el) => el._id === id);
-        const editedItem = this.createTask(value, description)
+    editTask = (taskForEdit) => {
+        this.setState({taskForEdit})
+    }
+
+    saveEditedTask = (editedTask) => {
+        const tasks = [...this.state.tasks];
+        const idx = tasks.findIndex((task) => task._id === editedTask._id);
+        tasks[idx] = editedTask;
+
         this.setState({
-            tasks: [
-                ...this.state.tasks.slice(0, idx),
-                editedItem,
-                ...this.state.tasks.slice(idx + 1)
-            ]
-        })
+            tasks,
+            taskForEdit: null
+        });
+    };
+
+    search = (tasks, value) => {
+        if (!value.trim) {
+            return tasks
+        }
+
+        return tasks.filter((task) => task
+            .taskName.toLowerCase()
+            .includes(value.toLowerCase()))
+    }
+
+    onTaskSearch = (searchValue) => {
+        this.setState({searchValue})
+    }
+
+    toggleDone = (id) => {
+        const tasks = [...this.state.tasks]
+        const idx = tasks.findIndex((task) => task._id === id)
+        tasks[idx] = {...tasks[idx], done: !tasks[idx].done}
+        this.setState({tasks})
+    }
+
+    statusFilter = (tasks, filter) => {
+        switch (filter) {
+            case "All":
+                return tasks
+            case "Active":
+                return tasks.filter((task) => !task.done)
+            case "Done":
+                return tasks.filter((task) => task.done)
+            default:
+                return tasks
+        }
+    }
+
+    changeFilter = (statusFilter) => {
+        this.setState({statusFilter})
     }
 
     render() {
+
+        const {tasks, searchValue, showConfirm, selectedTask, taskForEdit, statusFilter} = this.state
+
+        const visibleTasks = this.statusFilter(this.search(tasks, searchValue), statusFilter)
+
         return (
             <>
                 <Container className={styles.todoApp}>
-                    <AppHeader/>
+                    <Row>
+                        <Col>
+                            <AppHeader/>
+                        </Col>
+                        <Col>
+                            <Progress tasks={tasks}/>
+                        </Col>
+                    </Row>
+                    <div className='d-flex '>
+                        <SearchTask onTaskSearch={this.onTaskSearch}/>
+                        <StatusFilter statusFilter={statusFilter}
+                                      changeFilter={this.changeFilter}/>
+                    </div>
+
                     <AddTaskModalWindow addTask={this.addTask}
-                                        selectedTask={this.state.selectedTask}/>
+                                        selectedTask={selectedTask}/>
 
                     <Button variant='outline-warning'
                             className='float-right'
@@ -121,21 +187,26 @@ export default class App extends Component {
                             className='float-right mr-2'
                             onClick={this.selectAll}>Select all</Button>
 
-                    <TodoList tasks={this.state.tasks}
-                              selectedTask={this.state.selectedTask}
+                    <TodoList tasks={visibleTasks}
+                              selectedTask={selectedTask}
                               checkItem={this.checkItem}
                               deleteTask={this.deleteTask}
-                              editedTask={this.editedTask}/>
+                              editTask={this.editTask}
+                              toggleDone={this.toggleDone}/>
                     <Button variant="outline-danger float-right"
-                            disabled={!this.state.selectedTask.size}
+                            disabled={!selectedTask.size}
                             onClick={this.toggleConfirm}>
                         Remove selected
                     </Button>
                 </Container>
-                {this.state.showConfirm && <Confirm onClose={this.toggleConfirm}
-                                                    onConfirm={this.removeSelected}
-                                                    count={this.state.selectedTask.size}/>}
+                {showConfirm && <Confirm onClose={this.toggleConfirm}
+                                         onConfirm={this.removeSelected}
+                                         count={selectedTask.size}/>}
+                {taskForEdit && <EditTask taskForEdit={taskForEdit}
+                                          onSave={this.saveEditedTask}
+                                          onClose={() => this.editTask(null)}/>}
             </>
         )
     }
+
 }

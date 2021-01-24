@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import {Row, Col} from 'react-bootstrap'
 import styles from './todo-list.module.css'
 
-const TodoList = ({tasks, deleteTask, checkItem, selectedTask, editedTask}) => {
+const TodoList = ({tasks, deleteTask, checkItem, selectedTask, editTask, toggleDone}) => {
 
     const elements = tasks.map((item) => {
         return (
@@ -15,7 +15,8 @@ const TodoList = ({tasks, deleteTask, checkItem, selectedTask, editedTask}) => {
                               checkItem={() => checkItem(item._id)}
                               deleteTask={() => deleteTask(item._id)}
                               selectedTask={selectedTask}
-                              editedTask={editedTask}/>
+                              editTask={() => editTask(item)}
+                              toggleDone = {() => toggleDone(item._id)}/>
             </Col>
         )
     })
@@ -31,7 +32,9 @@ TodoList.propTypes = {
     tasks: PropTypes.array.isRequired,
     selectedTask: PropTypes.object.isRequired,
     checkItem: PropTypes.func.isRequired,
-    deleteTask: PropTypes.func.isRequired
+    deleteTask: PropTypes.func.isRequired,
+    editTask: PropTypes.func.isRequired,
+    toggleDone:PropTypes.func.isRequired
 }
 
 export default TodoList

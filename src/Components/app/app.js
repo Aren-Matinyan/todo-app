@@ -3,15 +3,13 @@ import React, {Component} from "react";
 import TodoList from "../todo-list/todo-list";
 import AppHeader from "../app-header/app-header";
 import Confirm from "../confirm/confirm";
-import AddTaskModalWindow from "../add-task-modal-window/add-task-modal-window";
+import AddItem from "../add-item/add-item";
 import SearchTask from "../search-task/search-task";
 import EditTask from "../edit-task/edit-task";
 import Progress from "../progress/progress";
 import StatusFilter from "../status-filter/status-filter";
 
 import {Button, Container, Row, Col} from "react-bootstrap";
-import moment from "moment";
-import {v4 as uuid4} from 'uuid';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import styles from './app.module.css';
@@ -23,34 +21,74 @@ export default class App extends Component {
         selectedTask: new Set(),
         showConfirm: false,
         searchValue: '',
+        openNewTaskModal: false,
         taskForEdit: null,
         statusFilter: 'All'
     }
 
-    createTask(text, description) {
-        const title = text.trim()
-        const desc = description.trim()
-        return {
-            taskName: title,
-            _id: uuid4(),
-            description: desc,
-            created: moment().format('D MMM, YYYY'),
-            done: false
-        }
-    }
+    componentDidMount() {
 
-    addTask = (text, description) => {
-
-        if (!text.trim()) {
-            return;
-        }
-
-        const newTask = this.createTask(text, description)
-        const newArr = [...this.state.tasks, newTask]
-        this.setState({
-            tasks: newArr,
+        fetch('http://localhost:3001/task', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
         })
+            .then(async (response) => {
+                const res = await response.json()
+                if (response.status >= 400 && response.status < 600) {
+                    if (res.error) {
+                        throw res.error
+                    } else {
+                        throw new Error('Something went wrong!!!')
+                    }
+                }
+
+                this.setState({
+                    tasks: res
+                });
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     }
+
+    addTask = (newTask) => {
+
+        fetch('http://localhost:3001/task', {
+            method: 'POST',
+            body: JSON.stringify(newTask),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(async (response) => {
+                const res = await response.json()
+                if (response.status >= 400 && response.status < 600) {
+                    if (res.error) {
+                        throw res.error
+                    } else {
+                        throw new Error('Something went wrong!!!')
+                    }
+                }
+
+                const tasks = [...this.state.tasks, res];
+
+                this.setState({
+                    tasks,
+                    openNewTaskModal: false
+                });
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    };
+
+    toggleNewTaskModal = () => {
+        this.setState({
+            openNewTaskModal: !this.state.openNewTaskModal
+        });
+    };
 
     checkItem = (itemId) => {
         const selectedTask = new Set(this.state.selectedTask)
@@ -65,10 +103,33 @@ export default class App extends Component {
     }
 
     deleteTask = (taskId) => {
-        const newArr = this.state.tasks.filter(el => el._id !== taskId)
-        this.setState({
-            tasks: newArr
+
+        fetch(`http://localhost:3001/task/${taskId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
         })
+            .then(async (response) => {
+                const res = await response.json()
+                if (response.status >= 400 && response.status < 600) {
+                    if (res.error) {
+                        throw res.error
+                    } else {
+                        throw new Error('Something went wrong!!!')
+                    }
+                }
+
+                const newArr = this.state.tasks.filter(el => el._id !== taskId)
+                this.setState({
+                    tasks: newArr
+                })
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+
+
     }
 
     removeSelected = () => {
@@ -122,7 +183,7 @@ export default class App extends Component {
         }
 
         return tasks.filter((task) => task
-            .taskName.toLowerCase()
+            .title.toLowerCase()
             .includes(value.toLowerCase()))
     }
 
@@ -131,10 +192,17 @@ export default class App extends Component {
     }
 
     toggleDone = (id) => {
+
         const tasks = [...this.state.tasks]
         const idx = tasks.findIndex((task) => task._id === id)
-        tasks[idx] = {...tasks[idx], done: !tasks[idx].done}
+        if (tasks[idx].status === 'active') {
+            tasks[idx] = {...tasks[idx], status: 'done'}
+        } else {
+            tasks[idx] = {...tasks[idx], status: 'active'}
+        }
+
         this.setState({tasks})
+
     }
 
     statusFilter = (tasks, filter) => {
@@ -142,9 +210,9 @@ export default class App extends Component {
             case "All":
                 return tasks
             case "Active":
-                return tasks.filter((task) => !task.done)
+                return tasks.filter((task) => task.status === 'active')
             case "Done":
-                return tasks.filter((task) => task.done)
+                return tasks.filter((task) => task.status === 'done')
             default:
                 return tasks
         }
@@ -156,9 +224,11 @@ export default class App extends Component {
 
     render() {
 
-        const {tasks, searchValue, showConfirm, selectedTask, taskForEdit, statusFilter} = this.state
+        const {tasks, searchValue, showConfirm, selectedTask, taskForEdit, statusFilter, openNewTaskModal} = this.state
 
-        const visibleTasks = this.statusFilter(this.search(tasks, searchValue), statusFilter)
+        const visibleTasks = this.statusFilter(
+            this.search(tasks, searchValue),
+            statusFilter)
 
         return (
             <>
@@ -177,9 +247,10 @@ export default class App extends Component {
                                       changeFilter={this.changeFilter}/>
                     </div>
 
-                    <AddTaskModalWindow addTask={this.addTask}
-                                        selectedTask={selectedTask}/>
-
+                    <Button variant="outline-primary"
+                            onClick={this.toggleNewTaskModal}>
+                        Add Task
+                    </Button>
                     <Button variant='outline-warning'
                             className='float-right'
                             onClick={this.deSelectAll}>Deselect all</Button>
@@ -199,6 +270,9 @@ export default class App extends Component {
                         Remove selected
                     </Button>
                 </Container>
+                {openNewTaskModal && <AddItem className='modal'
+                                              onClose={this.toggleNewTaskModal}
+                                              onAdd={this.addTask}/>}
                 {showConfirm && <Confirm onClose={this.toggleConfirm}
                                          onConfirm={this.removeSelected}
                                          count={selectedTask.size}/>}
@@ -208,5 +282,4 @@ export default class App extends Component {
             </>
         )
     }
-
 }

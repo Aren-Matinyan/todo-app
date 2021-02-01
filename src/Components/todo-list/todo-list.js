@@ -1,5 +1,6 @@
 import React from 'react'
 
+import {memo} from "react";
 import TodoListItem from "../todo-list-item/todo-list-item"
 import PropTypes from 'prop-types'
 import {Row, Col} from 'react-bootstrap'
@@ -37,4 +38,4 @@ TodoList.propTypes = {
     toggleDone:PropTypes.func.isRequired
 }
 
-export default TodoList
+export default memo(TodoList)

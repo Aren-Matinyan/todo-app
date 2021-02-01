@@ -1,5 +1,6 @@
 import React from "react"
 
+import {memo} from "react";
 import {DropdownButton, Dropdown} from 'react-bootstrap'
 import PropTypes from "prop-types";
 
@@ -28,4 +29,4 @@ StatusFilter.propTypes = {
     changeFilter: PropTypes.func.isRequired,
 }
 
-export default StatusFilter
+export default memo(StatusFilter)

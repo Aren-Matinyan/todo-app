@@ -1,11 +1,17 @@
 import React, {Component} from 'react'
 
 import PropTypes from 'prop-types'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import moment from "moment"
 import {Button, Form, Modal} from "react-bootstrap"
 
 export default class EditTask extends Component {
 
-    state = {...this.props.taskForEdit}
+    state = {
+        ...this.props.taskForEdit,
+        date: new Date(this.props.taskForEdit.date)
+    }
 
     handleChange = (event, propName) => {
         this.setState({
@@ -16,6 +22,7 @@ export default class EditTask extends Component {
     onSubmit = () => {
         const title = this.state.title.trim()
         const description = this.state.description.trim()
+        const {date} = this.state
         if (!title) {
             return
         }
@@ -23,6 +30,7 @@ export default class EditTask extends Component {
             ...this.state,
             title,
             description,
+            date: moment(date).format("YYYY-MM-DD")
         })
     }
 
@@ -30,6 +38,12 @@ export default class EditTask extends Component {
         if (event.key === "Enter") {
             this.onSubmit()
         }
+    }
+
+    handleChangeDate = (value) => {
+        this.setState({
+            date: value || new Date()
+        })
     }
 
     render() {
@@ -60,6 +74,10 @@ export default class EditTask extends Component {
                                   placeholder="Description"
                                   onChange={(event) => this.handleChange(event, "description")}
                                   value={description}/>
+                    <DatePicker minDate={new Date()}
+                                selected={this.state.date}
+                                onChange={this.handleChangeDate}
+                                className='mb-3'/>
                 </Modal.Body>
 
                 <Modal.Footer>

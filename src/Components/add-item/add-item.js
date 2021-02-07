@@ -1,12 +1,16 @@
 import React, {Component} from 'react'
 
 import {Button, FormControl, Modal} from 'react-bootstrap'
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import moment from "moment"
 import PropTypes from 'prop-types'
 
 export default class AddItem extends Component {
     state = {
         title: '',
-        description: ''
+        description: '',
+        date: new Date()
     };
 
     handleChange = (event) => {
@@ -26,6 +30,7 @@ export default class AddItem extends Component {
     handleSubmit = () => {
         const title = this.state.title.trim();
         const description = this.state.description.trim();
+        const {date} = this.state
 
         if (!title) {
             return;
@@ -34,10 +39,17 @@ export default class AddItem extends Component {
         const newTask = {
             title,
             description,
+            date: moment(date).format("YYYY-MM-DD")
         };
 
         this.props.onAdd(newTask);
     };
+
+    handleChangeDate = (value) => {
+        this.setState({
+            date: value || new Date()
+        })
+    }
 
     render() {
         const {onClose} = this.props;
@@ -65,7 +77,11 @@ export default class AddItem extends Component {
                                      as="textarea"
                                      rows={5}
                                      name='description'
-                                     onChange={this.handleChange}/>
+                                     onChange={this.handleChange}
+                                     className='mb-3'/>
+                        <DatePicker minDate={new Date()}
+                                    selected={this.state.date}
+                                    onChange={this.handleChangeDate}/>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={this.handleSubmit}

@@ -26,6 +26,7 @@ export default class TodoListItem extends PureComponent {
                     <Card.Text> Description: {task.description} </Card.Text>
                     <Card.Text> Status: {task.status === 'done' ? "Done" : "Active"} </Card.Text>
                     <Card.Text> Created: {moment(task.created_at).format('D MMM, YYYY')} </Card.Text>
+                    <Card.Text> Date: {moment(task.date).format('D MMM, YYYY')} </Card.Text>
                     <Button onClick={deleteTask}
                             disabled={!!selectedTask.size}
                             variant='outline-danger float-right'>
@@ -56,5 +57,5 @@ TodoListItem.propTypes = {
     deleteTask: PropTypes.func.isRequired,
     selectedTask: PropTypes.object.isRequired,
     editTask: PropTypes.func.isRequired,
-    toggleDone:PropTypes.func.isRequired
+    toggleDone: PropTypes.func.isRequired
 }

@@ -128,19 +128,44 @@ export default class App extends Component {
             .catch((error) => {
                 console.log(error)
             })
-
-
     }
 
     removeSelected = () => {
         const {selectedTask, tasks} = this.state
-        const newTask = tasks.filter((task) => !selectedTask.has(task._id))
 
-        this.setState({
-            tasks: newTask,
-            selectedTask: new Set(),
-            showConfirm: false
+        const body = {tasks:[...selectedTask]}
+
+        fetch(`http://localhost:3001/task`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
         })
+            .then(async (response) => {
+                const res = await response.json()
+                if (response.status >= 400 && response.status < 600) {
+                    if (res.error) {
+                        throw res.error
+                    } else {
+                        throw new Error('Something went wrong!!!')
+                    }
+                }
+
+                const newTask = tasks.filter((task) => !selectedTask.has(task._id))
+
+                this.setState({
+                    tasks: newTask,
+                    selectedTask: new Set(),
+                    showConfirm: false
+                })
+
+
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+
     }
 
     toggleConfirm = () => {
@@ -168,13 +193,35 @@ export default class App extends Component {
 
     saveEditedTask = (editedTask) => {
         const tasks = [...this.state.tasks];
-        const idx = tasks.findIndex((task) => task._id === editedTask._id);
-        tasks[idx] = editedTask;
 
-        this.setState({
-            tasks,
-            taskForEdit: null
-        });
+        fetch(`http://localhost:3001/task/${editedTask._id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(editedTask)
+        })
+            .then(async (response) => {
+                const res = await response.json()
+                if (response.status >= 400 && response.status < 600) {
+                    if (res.error) {
+                        throw res.error
+                    } else {
+                        throw new Error('Something went wrong!!!')
+                    }
+                }
+
+                const idx = tasks.findIndex((task) => task._id === editedTask._id);
+                tasks[idx] = editedTask;
+
+                this.setState({
+                    tasks,
+                    taskForEdit: null
+                });
+            })
+            .catch((error) => {
+                console.log(error)
+            })
     };
 
     search = (tasks, value) => {

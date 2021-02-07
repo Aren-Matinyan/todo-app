@@ -14,15 +14,14 @@ export default class EditTask extends Component {
     }
 
     onSubmit = () => {
-        const title = this.state.taskName.trim()
+        const title = this.state.title.trim()
         const description = this.state.description.trim()
         if (!title) {
             return
         }
         this.props.onSave({
             ...this.state,
-            _id: this.state._id,
-            taskName: title,
+            title,
             description,
         })
     }
@@ -34,7 +33,7 @@ export default class EditTask extends Component {
     }
 
     render() {
-        const {taskName, description} = this.state;
+        const {title, description} = this.state;
         const {onClose} = this.props
         return (
             <Modal
@@ -52,9 +51,9 @@ export default class EditTask extends Component {
 
                 <Modal.Body>
                     <Form.Control placeholder="What needs to be done?"
-                                  onChange={(event) => this.handleChange(event, "taskName")}
+                                  onChange={(event) => this.handleChange(event, "title")}
                                   onKeyDown={this.handleKeyDown}
-                                  value={taskName}
+                                  value={title}
                                   className='mb-3'/>
 
                     <Form.Control as="textarea" rows={3}

@@ -1,14 +1,16 @@
-import React, {Component} from 'react'
+import React, {PureComponent} from 'react'
 
-import {Button, Card} from 'react-bootstrap'
 import PropTypes from 'prop-types'
+import {Button, Card} from 'react-bootstrap'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faTrashAlt, faCheckCircle, faEdit} from '@fortawesome/free-solid-svg-icons'
+import moment from "moment"
 import styles from './todo-list-item.module.css'
 
-export default class TodoListItem extends Component {
+export default class TodoListItem extends PureComponent {
 
     render() {
+
         const {task, deleteTask, selectedTask, editTask, checkItem, toggleDone} = this.props
 
         return (
@@ -18,12 +20,12 @@ export default class TodoListItem extends Component {
                            onChange={checkItem}
                            checked={selectedTask.has(task._id)}/>
                     <Card.Title
-                        className={task.done ? `${styles.todoTask} ${styles.done}` : styles.todoTask}>
-                        {task.taskName}
+                        className={task.status === 'done' ? `${styles.todoTask} ${styles.done}` : styles.todoTask}>
+                        {task.title}
                     </Card.Title>
                     <Card.Text> Description: {task.description} </Card.Text>
-                    <Card.Text> Status: {task.done ? "Done" : "Active"} </Card.Text>
-                    <Card.Text> Created: {task.created} </Card.Text>
+                    <Card.Text> Status: {task.status === 'done' ? "Done" : "Active"} </Card.Text>
+                    <Card.Text> Created: {moment(task.created_at).format('D MMM, YYYY')} </Card.Text>
                     <Button onClick={deleteTask}
                             disabled={!!selectedTask.size}
                             variant='outline-danger float-right'>

@@ -1,92 +1,86 @@
 import React, {Component} from 'react'
 
+import {Button, FormControl, Modal} from 'react-bootstrap'
 import PropTypes from 'prop-types'
-import {Button, Form, InputGroup, Modal} from "react-bootstrap"
-// import styles from './add-item.module.css'
 
 export default class AddItem extends Component {
-
     state = {
-        inputValue: '',
+        title: '',
         description: ''
-    }
+    };
 
     handleChange = (event) => {
-        this.setState({
-            inputValue: event.target.value
-        })
-    }
+        const {name, value} = event.target;
 
-    descriptionChange = (event) => {
         this.setState({
-            description: event.target.value
-        })
-    }
-
-    onSubmit = () => {
-        this.props.addTask(this.state.inputValue, this.state.description)
-        this.onCancel()
-    }
+            [name]: value
+        });
+    };
 
     handleKeyDown = (event) => {
         if (event.key === "Enter") {
-            this.onSubmit()
+            this.handleSubmit();
         }
-    }
+    };
 
-    onCancel = () => {
-        this.props.onHide()
-        this.setState({
-            inputValue: '',
-            description: '',
-        })
-    }
+    handleSubmit = () => {
+        const title = this.state.title.trim();
+        const description = this.state.description.trim();
+
+        if (!title) {
+            return;
+        }
+
+        const newTask = {
+            title,
+            description,
+        };
+
+        this.props.onAdd(newTask);
+    };
 
     render() {
-
-        const {inputValue, description} = this.state
+        const {onClose} = this.props;
 
         return (
-            <Modal
-                show={this.props.show}
-                onHide={this.onCancel}
-                size="lg"
-                aria-labelledby="contained-modal-title-vcenter"
-                centered
-            >
-                <Modal.Header closeButton>
-                    <InputGroup>
-                        <Form.Control placeholder="What needs to be done?"
-                                      onChange={this.handleChange}
-                                      value={inputValue}
-                                      onKeyDown={this.handleKeyDown}
-                        />
-                    </InputGroup>
-                </Modal.Header>
-
-                <Modal.Body>
-                    <Form.Control as="textarea" rows={3}
-                                  placeholder="Description"
-                                  onChange={this.descriptionChange}
-                                  value={description}/>
-                </Modal.Body>
-
-                <Modal.Footer>
-                    <Button onClick={this.onSubmit}
-                            variant='outline-success'>
-                        Add
-                    </Button>
-                    <Button onClick={this.onCancel}
-                            variant='outline-primary'>Cancel</Button>
-                </Modal.Footer>
-            </Modal>
-        )
+            <>
+                <Modal className={this.props.className}
+                       show={true}
+                       onHide={onClose}
+                       size="lg"
+                       aria-labelledby="contained-modal-title-vcenter"
+                       centered>
+                    <Modal.Header closeButton>
+                        <Modal.Title id="contained-modal-title-vcenter">
+                            Add new Task
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <FormControl placeholder="Title"
+                                     onChange={this.handleChange}
+                                     name='title'
+                                     onKeyPress={this.handleKeyDown}
+                                     className='mb-3'/>
+                        <FormControl placeholder="Description"
+                                     as="textarea"
+                                     rows={5}
+                                     name='description'
+                                     onChange={this.handleChange}/>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.handleSubmit}
+                                variant='success'>
+                            Add
+                        </Button>
+                        <Button onClick={onClose}>Cancel</Button>
+                    </Modal.Footer>
+                </Modal>
+            </>
+        );
     }
 }
 
 AddItem.propTypes = {
-    show: PropTypes.bool.isRequired,
-    onHide: PropTypes.func.isRequired,
-    addTask: PropTypes.func.isRequired,
-    selectedTask: PropTypes.object.isRequired,
-}
+    onAdd: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired,
+};

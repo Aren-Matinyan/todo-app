@@ -1,10 +1,12 @@
 import React from 'react'
 
+import {memo} from "react";
 import {ProgressBar} from 'react-bootstrap'
+import PropTypes from 'prop-types'
 
 const Progress = ({tasks}) => {
 
-    const doneCount = tasks.filter((el) => el.done).length
+    const doneCount = tasks.filter((el) => el.status === 'done').length
     const percent = doneCount * 100 / tasks.length
 
     return (
@@ -23,4 +25,8 @@ const Progress = ({tasks}) => {
     )
 }
 
-export default Progress
+Progress.propTypes = {
+    tasks: PropTypes.array.isRequired
+}
+
+export default memo(Progress)

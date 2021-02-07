@@ -1,8 +1,8 @@
 import React, {PureComponent} from "react"
 
-import {Form, Button, InputGroup} from "react-bootstrap";
-import {faTimes} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {Form, Button, InputGroup} from "react-bootstrap"
+import {faTimes} from "@fortawesome/free-solid-svg-icons"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import PropTypes from 'prop-types'
 
 export default class SearchTask extends PureComponent {

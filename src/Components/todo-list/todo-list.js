@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {memo} from "react";
+import {memo} from "react"
 import TodoListItem from "../todo-list-item/todo-list-item"
 import PropTypes from 'prop-types'
 import {Row, Col} from 'react-bootstrap'

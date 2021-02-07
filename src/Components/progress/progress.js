@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {memo} from "react";
+import {memo} from "react"
 import {ProgressBar} from 'react-bootstrap'
 import PropTypes from 'prop-types'
 

@@ -5,6 +5,7 @@ import About from "../pages/about/about"
 import Contact from "../pages/contact/contact"
 import NotFound from "../pages/not-found/not-found"
 import NavMenu from "../nav-menu/nav-menu"
+import SingleTask from "../pages/single-task/single-task"
 
 import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom"
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -26,6 +27,10 @@ export default class App extends Component {
                     <Route path='/contact'
                            component={Contact}
                            exact/>
+                    <Route path='/task/:taskId'
+                           component={SingleTask}
+                           exact/>
+
                     <Route path='/not-found'
                            component={NotFound}
                            exact/>

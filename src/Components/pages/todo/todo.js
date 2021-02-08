@@ -1,7 +1,6 @@
 import React, {Component} from "react"
 
 import TodoList from "../../todo-list/todo-list"
-import AppHeader from "../../app-header/app-header"
 import Confirm from "../../confirm/confirm"
 import AddItem from "../../add-item/add-item"
 import SearchTask from "../../search-task/search-task"
@@ -280,9 +279,6 @@ export default class Todo extends Component {
             <>
                 <Container className={styles.todoApp}>
                     <Row>
-                        <Col>
-                            <AppHeader/>
-                        </Col>
                         <Col>
                             <Progress tasks={tasks}/>
                         </Col>

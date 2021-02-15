@@ -1,3 +1,25 @@
-.active{
-    color: red;
+.active {
+    color: tomato !important;
+}
+
+.header {
+    color: darkturquoise;
+    font-style: italic;
+    margin-right: 10px;
+    font-size: 30px;
+}
+
+.header:hover {
+    text-decoration: none;
+    color: tomato;
+}
+
+.navLink {
+    margin-right: 10px;
+    color: steelblue;
+}
+
+.navLink:hover {
+    color: white;
+    text-decoration: none;
 }

@@ -73,7 +73,9 @@ export default class EditTask extends Component {
                     <Form.Control as="textarea" rows={3}
                                   placeholder="Description"
                                   onChange={(event) => this.handleChange(event, "description")}
-                                  value={description}/>
+                                  value={description}
+                                  className='mb-3'/>
+
                     <DatePicker minDate={new Date()}
                                 selected={this.state.date}
                                 onChange={this.handleChangeDate}

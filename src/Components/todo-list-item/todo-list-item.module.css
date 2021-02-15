@@ -10,3 +10,12 @@
 .todoCard {
     margin: 5px 0;
 }
+
+.title {
+    color: steelblue;
+}
+
+.title:hover {
+    color: #e89784;
+    text-decoration: none !important;
+}

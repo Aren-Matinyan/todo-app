@@ -1,8 +1,8 @@
 import React from "react"
 
-import {memo} from "react";
+import {memo} from "react"
 import {DropdownButton, Dropdown} from 'react-bootstrap'
-import PropTypes from "prop-types";
+import PropTypes from "prop-types"
 
 const StatusFilter = ({statusFilter, changeFilter}) => {
 

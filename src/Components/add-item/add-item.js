@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 
 import {Button, FormControl, Modal} from 'react-bootstrap'
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
 import moment from "moment"
 import PropTypes from 'prop-types'
 
@@ -11,39 +11,39 @@ export default class AddItem extends Component {
         title: '',
         description: '',
         date: new Date()
-    };
+    }
 
     handleChange = (event) => {
-        const {name, value} = event.target;
+        const {name, value} = event.target
 
         this.setState({
             [name]: value
-        });
-    };
+        })
+    }
 
     handleKeyDown = (event) => {
         if (event.key === "Enter") {
-            this.handleSubmit();
+            this.handleSubmit()
         }
-    };
+    }
 
     handleSubmit = () => {
-        const title = this.state.title.trim();
-        const description = this.state.description.trim();
+        const title = this.state.title.trim()
+        const description = this.state.description.trim()
         const {date} = this.state
 
         if (!title) {
-            return;
+            return
         }
 
         const newTask = {
             title,
             description,
             date: moment(date).format("YYYY-MM-DD")
-        };
+        }
 
-        this.props.onAdd(newTask);
-    };
+        this.props.onAdd(newTask)
+    }
 
     handleChangeDate = (value) => {
         this.setState({
@@ -52,7 +52,7 @@ export default class AddItem extends Component {
     }
 
     render() {
-        const {onClose} = this.props;
+        const {onClose} = this.props
 
         return (
             <>
@@ -92,11 +92,11 @@ export default class AddItem extends Component {
                     </Modal.Footer>
                 </Modal>
             </>
-        );
+        )
     }
 }
 
 AddItem.propTypes = {
     onAdd: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
-};
+}

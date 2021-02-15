@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 
 import PropTypes from 'prop-types'
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
 import moment from "moment"
 import {Button, Form, Modal} from "react-bootstrap"
 
@@ -47,7 +47,7 @@ export default class EditTask extends Component {
     }
 
     render() {
-        const {title, description} = this.state;
+        const {title, description} = this.state
         const {onClose} = this.props
         return (
             <Modal

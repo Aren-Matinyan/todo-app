@@ -25,7 +25,7 @@ function Confirm({onClose, onConfirm, count}) {
                         variant="outline-success">Cancel</Button>
             </Modal.Footer>
         </Modal>
-    );
+    )
 }
 
 Confirm.propTypes = {

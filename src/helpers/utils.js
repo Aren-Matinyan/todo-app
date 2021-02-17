@@ -1,3 +1,4 @@
-export function textTruncate(str = "") {
-    return str.length < 60 ? str : str.slice(0, 60) + "..."
+export function textTruncate(str = "", maxLength) {
+    return !maxLength || str.length <= maxLength ?
+        str : str.slice(0, maxLength) + "..."
 }

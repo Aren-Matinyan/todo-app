@@ -5,8 +5,10 @@ import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import moment from "moment"
 import PropTypes from 'prop-types'
+import {addTask} from "../store/actions"
+import {connect} from "react-redux"
 
-export default class AddItem extends Component {
+class AddItem extends Component {
 
     constructor(props) {
         super(props)
@@ -51,7 +53,7 @@ export default class AddItem extends Component {
             date: moment(date).format("YYYY-MM-DD")
         }
 
-        this.props.onAdd(newTask)
+        this.props.addTask(newTask)
     }
 
     handleChangeDate = (value) => {
@@ -107,6 +109,12 @@ export default class AddItem extends Component {
 }
 
 AddItem.propTypes = {
-    onAdd: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
 }
+
+const mapDispatchToProps = {
+    addTask
+}
+
+
+export default connect(null, mapDispatchToProps)(AddItem)

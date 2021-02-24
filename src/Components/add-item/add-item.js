@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, createRef} from 'react'
 
 import {Button, FormControl, Modal} from 'react-bootstrap'
 import DatePicker from "react-datepicker"
@@ -7,10 +7,19 @@ import moment from "moment"
 import PropTypes from 'prop-types'
 
 export default class AddItem extends Component {
-    state = {
-        title: '',
-        description: '',
-        date: new Date()
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            title: '',
+            description: '',
+            date: new Date()
+        }
+        this.titleRef = createRef()
+    }
+
+    componentDidMount() {
+        this.titleRef.current.focus()
     }
 
     handleChange = (event) => {
@@ -72,7 +81,8 @@ export default class AddItem extends Component {
                                      onChange={this.handleChange}
                                      name='title'
                                      onKeyPress={this.handleKeyDown}
-                                     className='mb-3'/>
+                                     className='mb-3'
+                                     ref={this.titleRef}/>
                         <FormControl placeholder="Description"
                                      as="textarea"
                                      rows={5}

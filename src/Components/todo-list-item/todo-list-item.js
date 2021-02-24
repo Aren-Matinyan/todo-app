@@ -23,9 +23,9 @@ export default class TodoListItem extends PureComponent {
                            checked={selectedTask.has(task._id)}/>
                     <Link to={`/task/${task._id}`}
                           className={styles.title}>
-                        <Card.Title>{task.title}</Card.Title>
+                        <Card.Title>{textTruncate(task.title, 15)}</Card.Title>
                     </Link>
-                    <Card.Text> Description: {textTruncate(task.description)} </Card.Text>
+                    <Card.Text> Description: {textTruncate(task.description, 60)} </Card.Text>
                     <Card.Text> Status: {task.status === 'done' ? "Done" : "Active"} </Card.Text>
                     <Card.Text> Created: {moment(task.created_at).format('D MMM, YYYY')} </Card.Text>
                     <Card.Text> Date: {moment(task.date).format('D MMM, YYYY')} </Card.Text>

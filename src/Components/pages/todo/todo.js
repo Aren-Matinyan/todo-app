@@ -34,7 +34,7 @@ class Todo extends Component {
             })
             return
         }
-        if (!prevProps.editTaskSuccess && this.props.editTaskSuccess) {
+        if (!prevProps.editTasksSuccess && this.props.editTasksSuccess) {
             this.setState({
                 taskForEdit: null
             })
@@ -199,7 +199,7 @@ const mapStateToProps = (state) => {
     return {
         tasks: state.tasks,
         addTaskSuccess: state.addTaskSuccess,
-        editTaskSuccess: state.editTaskSuccess,
+        editTasksSuccess: state.editTasksSuccess,
         deleteTaskSuccess: state.deleteTaskSuccess
     }
 }

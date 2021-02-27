@@ -28,12 +28,13 @@ class EditTask extends Component {
         if (!title) {
             return
         }
-        this.props.editTask({
+        const editedTask = {
             ...this.state,
             title,
             description,
             date: moment(date).format("YYYY-MM-DD")
-        })
+        }
+        this.props.editTask(editedTask, this.props.from)
     }
 
     handleKeyDown = (event) => {

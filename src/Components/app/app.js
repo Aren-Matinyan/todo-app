@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useEffect} from "react"
 
 import Todo from "../pages/todo/todo"
 import About from "../pages/about/about"
@@ -7,13 +7,37 @@ import NotFound from "../pages/not-found/not-found"
 import NavMenu from "../nav-menu/nav-menu"
 import SingleTask from "../pages/single-task/single-task"
 import Spinner from "../spinner/spinner"
+import {connect} from 'react-redux'
 import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom"
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {connect} from 'react-redux'
-
+import {ToastContainer, toast} from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 // import styles from './app.module.css'
 
-function App({loading}) {
+function App({loading, successMessage, errorMessage}) {
+
+    useEffect(() => {
+        if (successMessage) {
+            toast.success(successMessage, {
+                position: "bottom-left",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            })
+        }
+        if (errorMessage) {
+            toast.error(errorMessage, {
+                position: "bottom-left",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true
+            })
+        }
+    }, [successMessage, errorMessage])
 
     return (
         <div>
@@ -40,13 +64,16 @@ function App({loading}) {
                 </Switch>
             </BrowserRouter>
             {loading && <Spinner/>}
+            <ToastContainer/>
         </div>
     )
 }
 
 const mapStateToProps = (state) => {
     return {
-        loading: state.loading
+        loading: state.loading,
+        successMessage: state.successMessage,
+        errorMessage: state.errorMessage
     }
 }
 

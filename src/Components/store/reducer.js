@@ -2,10 +2,14 @@ import * as actionTypes from './action-types'
 
 const defaultState = {
     tasks: [],
+    task: null,
     addTaskSuccess: false,
     editTaskSuccess: false,
+    editTasksSuccess: false,
     deleteTaskSuccess: false,
-    loading: false
+    loading: false,
+    successMessage: null,
+    errorMessage: null
 }
 
 export default function reducer(state = defaultState, action) {
@@ -17,7 +21,17 @@ export default function reducer(state = defaultState, action) {
                 loading: true,
                 addTaskSuccess: false,
                 editTaskSuccess: false,
-                deleteTaskSuccess: false
+                editTasksSuccess: false,
+                deleteTaskSuccess: false,
+                successMessage: null,
+                errorMessage: null
+            }
+        }
+        case actionTypes.ERROR: {
+            return {
+                ...state,
+                loading: false,
+                errorMessage: action.error
             }
         }
         case actionTypes.GET_TASKS:
@@ -26,19 +40,27 @@ export default function reducer(state = defaultState, action) {
                 tasks: action.tasks,
                 loading: false
             }
+        case actionTypes.GET_TASK:
+            return {
+                ...state,
+                task: action.task,
+                loading: false
+            }
         case actionTypes.ADD_TASK: {
             return {
                 ...state,
                 tasks: [...state.tasks, action.task],
                 addTaskSuccess: true,
-                loading: false
+                loading: false,
+                successMessage: "Task created successfully"
             }
         }
         case actionTypes.DELETE_TASK: {
             return {
                 ...state,
                 tasks: state.tasks.filter(el => el._id !== action.taskId),
-                loading: false
+                loading: false,
+                successMessage: "Task deleted successfully"
             }
         }
         case actionTypes.DELETE_TASKS: {
@@ -48,10 +70,21 @@ export default function reducer(state = defaultState, action) {
                 ...state,
                 tasks: newTask,
                 deleteTaskSuccess: true,
-                loading: false
+                loading: false,
+                successMessage: "Tasks deleted successfully"
             }
         }
         case actionTypes.EDIT_TASK: {
+            if (action.from === 'single') {
+                return {
+                    ...state,
+                    task: action.editedTask,
+                    editTaskSuccess: true,
+                    loading: false,
+                    successMessage: "Task edited successfully"
+                }
+            }
+
             const tasks = [...state.tasks]
             const foundIndex = tasks.findIndex((task) => task._id === action.editedTask._id)
             tasks[foundIndex] = action.editedTask
@@ -59,8 +92,9 @@ export default function reducer(state = defaultState, action) {
             return {
                 ...state,
                 tasks,
-                editTaskSuccess: true,
-                loading: false
+                editTasksSuccess: true,
+                loading: false,
+                successMessage: "Task edited successfully"
             }
         }
 

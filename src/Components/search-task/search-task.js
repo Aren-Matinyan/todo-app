@@ -1,45 +1,122 @@
-import React, {PureComponent} from "react"
+import React, {useState} from "react"
 
-import {Form, Button, InputGroup} from "react-bootstrap"
-import {faTimes} from "@fortawesome/free-solid-svg-icons"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import PropTypes from 'prop-types'
+import {connect} from 'react-redux'
+import {textTruncate} from "../../helpers/utils"
+import {Button, Dropdown, DropdownButton, FormControl, InputGroup} from "react-bootstrap"
+import DatePicker from "react-datepicker"
+import moment from "moment"
+import {getTasks} from "../store/actions"
+import "react-datepicker/dist/react-datepicker.css"
+import PropTypes from "prop-types"
 
-export default class SearchTask extends PureComponent {
+const statusOptions = [
+    {label: 'All', value: ''},
+    {label: 'Active', value: 'active'},
+    {label: 'Done', value: 'done'}
+]
 
-    state = {
-        changedValue: ''
+const sortOptions = [
+    {label: 'All', value: ''},
+    {label: 'A-Z', value: 'a-z'},
+    {label: 'Z-A', value: 'z-a'},
+    {label: 'Creation date oldest', value: 'creation-date-oldest'},
+    {label: 'Creation date newest', value: 'creation-date-newest'},
+    {label: 'Completion date oldest', value: 'completion-date-oldest'},
+    {label: 'Completion date newest', value: 'completion-date-newest'}
+]
+
+const dateOptions = [
+    {label: 'Created before', value: 'create_lte'},
+    {label: 'Created after', value: 'create_gte'},
+    {label: 'Complete before', value: 'complete_lte'},
+    {label: 'Complete after', value: 'complete_gte'},
+]
+
+const SearchTask = ({getTasks}) => {
+
+    const [status, setStatus] = useState({value: ''})
+    const [sort, setSort] = useState({value: ''})
+    const [search, setSearch] = useState('')
+    const [dates, setDates] = useState({
+        create_lte: null,
+        create_gte: null,
+        complete_lte: null,
+        complete_gte: null
+    })
+
+    const handleChangeDate = (value, name) => {
+        setDates({
+            ...dates,
+            [name]: value
+        })
     }
 
-    handleChange = (event) => {
-        const changedValue = event.target.value
-        this.setState({changedValue})
-        this.props.onTaskSearch(changedValue)
+    const handleSubmit = () => {
+        const params = {}
+        search && (params.search = search)
+        sort.value && (params.sort = sort.value)
+        status.value && (params.status = status.value)
+
+        for (let key in dates) {
+            const value = dates[key]
+            if (value){
+                params[key] = moment(value).format("YYYY-MM-DD")
+            }
+        }
+        getTasks(params)
     }
 
-    clearSearchPanel = () => {
-        this.setState({changedValue: ''})
-        this.props.onTaskSearch('')
-    }
-
-    render() {
-        return (
-            <InputGroup className="mb-3 mr-2">
-                <Form.Control
-                    placeholder="Search..."
-                    value={this.state.changedValue}
-                    onChange={this.handleChange}/>
+    return (
+        <div className='mb-3 mt-3'>
+            <InputGroup>
+                <FormControl placeholder="Search..."
+                             onChange={(event) => setSearch(event.target.value)}/>
+                <DropdownButton as={InputGroup.Prepend}
+                                variant="outline-secondary"
+                                title={status.value ? status.label : "Status"}
+                                id="input-group-dropdown-2">
+                    {statusOptions.map((option, index) => (
+                        <Dropdown.Item key={index}
+                                       active={status.value === option.value}
+                                       onClick={() => setStatus(option)}>
+                            {option.label}
+                        </Dropdown.Item>
+                    ))}
+                </DropdownButton>
+                <DropdownButton as={InputGroup.Prepend}
+                                variant="outline-secondary"
+                                title={sort.value ? textTruncate(sort.label, 4) : "Sort"}
+                                id="input-group-dropdown-2">
+                    {sortOptions.map((option, index) => (
+                        <Dropdown.Item key={index}
+                                       active={sort.value === option.value}
+                                       onClick={() => setSort(option)}>
+                            {option.label}
+                        </Dropdown.Item>
+                    ))}
+                </DropdownButton>
                 <InputGroup.Append>
-                    <Button onClick={this.clearSearchPanel}
-                            variant="outline-secondary">
-                        <FontAwesomeIcon icon={faTimes}/>
-                    </Button>
+                    <Button variant="outline-primary"
+                            onClick={handleSubmit}>Search</Button>
                 </InputGroup.Append>
             </InputGroup>
-        )
-    }
+            {dateOptions.map((option, index) => (
+                <div key={index}>
+                    <span>{option.label}</span>
+                    <DatePicker selected={dates[option.value]}
+                                onChange={(value) => handleChangeDate(value, option.value)}/>
+                </div>
+            ))}
+        </div>
+    )
 }
 
 SearchTask.propTypes = {
-    onTaskSearch: PropTypes.func.isRequired
+    getTasks: PropTypes.func.isRequired
 }
+
+const mapDispatchToProps = {
+    getTasks
+}
+
+export default connect(null, mapDispatchToProps)(SearchTask)

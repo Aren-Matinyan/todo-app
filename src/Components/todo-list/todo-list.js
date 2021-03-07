@@ -1,12 +1,12 @@
 import React from 'react'
 
-import {memo} from "react"
-import TodoListItem from "../todo-list-item/todo-list-item"
 import PropTypes from 'prop-types'
+import TodoListItem from "../todo-list-item/todo-list-item"
 import {Row, Col} from 'react-bootstrap'
 import styles from './todo-list.module.css'
+import {connect} from "react-redux";
 
-const TodoList = ({tasks, deleteTask, checkItem, selectedTask, editTask, toggleDone}) => {
+const TodoList = ({tasks, checkItem, selectedTask}) => {
 
     const elements = tasks.map((item) => {
         return (
@@ -14,10 +14,7 @@ const TodoList = ({tasks, deleteTask, checkItem, selectedTask, editTask, toggleD
                  xs={12} sm={6} md={4} lg={3} xl={3}>
                 <TodoListItem task={item}
                               checkItem={() => checkItem(item._id)}
-                              deleteTask={() => deleteTask(item._id)}
-                              selectedTask={selectedTask}
-                              editTask={() => editTask(item)}
-                              toggleDone = {() => toggleDone(item._id)}/>
+                              selectedTask={selectedTask}/>
             </Col>
         )
     })
@@ -31,11 +28,15 @@ const TodoList = ({tasks, deleteTask, checkItem, selectedTask, editTask, toggleD
 
 TodoList.propTypes = {
     tasks: PropTypes.array.isRequired,
-    selectedTask: PropTypes.object.isRequired,
     checkItem: PropTypes.func.isRequired,
-    deleteTask: PropTypes.func.isRequired,
-    editTask: PropTypes.func.isRequired,
-    toggleDone:PropTypes.func.isRequired
+    selectedTask: PropTypes.object.isRequired,
 }
 
-export default memo(TodoList)
+const mapStateToProps = (state) => {
+    return {
+        tasks: state.tasks,
+    }
+}
+
+
+export default connect(mapStateToProps)(TodoList)

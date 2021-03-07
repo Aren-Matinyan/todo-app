@@ -98,7 +98,8 @@ class EditTask extends Component {
 
 EditTask.propTypes = {
     taskForEdit: PropTypes.object.isRequired,
-    onClose: PropTypes.func.isRequired
+    onClose: PropTypes.func.isRequired,
+    editTask: PropTypes.func.isRequired,
 }
 
 const mapDispatchToProps = {

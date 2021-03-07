@@ -5,8 +5,9 @@ import moment from "moment"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faCheckCircle, faEdit, faTrashAlt} from "@fortawesome/free-solid-svg-icons"
 import EditTask from "../../edit-task/edit-task"
-import {getTask} from "../../store/actions"
+import {getTask, deleteTask} from "../../store/actions"
 import {connect} from "react-redux"
+import PropTypes from "prop-types"
 
 class SingleTask extends Component {
 
@@ -28,31 +29,8 @@ class SingleTask extends Component {
     }
 
     deleteTask = () => {
-
-        const taskId = this.state.task._id
-
-        fetch(`http://localhost:3001/task/${taskId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(async (response) => {
-                const res = await response.json()
-                if (response.status >= 400 && response.status < 600) {
-                    if (res.error) {
-                        throw res.error
-                    } else {
-                        throw new Error('Something went wrong!!!')
-                    }
-                }
-
-                this.props.history.push('/')
-
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+        const taskId = this.props.match.params.taskId
+        this.props.deleteTask(taskId, 'single')
     }
 
     toggleEditModal = () => {
@@ -107,6 +85,13 @@ class SingleTask extends Component {
     }
 }
 
+SingleTask.propTypes = {
+    task: PropTypes.object.isRequired,
+    editTaskSuccess: PropTypes.bool.isRequired,
+    getTask: PropTypes.func.isRequired,
+    deleteTask: PropTypes.func.isRequired
+}
+
 const mapStateToProps = (state) => {
     return {
         task: state.task,
@@ -115,7 +100,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-    getTask
+    getTask,
+    deleteTask
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleTask)

@@ -105,6 +105,29 @@ export default function reducer(state = defaultState, action) {
                 successMessage: "Task edited successfully"
             }
         }
+        case actionTypes.TOGGLE_DONE:
+            let message = ""
+            action.task.status === "done" ? (message = "Task completed") : (message = "Task not completed yet")
+
+            if (action.from === 'single') {
+                return {
+                    ...state,
+                    task: action.task,
+                    loading: false,
+                    successMessage: message
+                }
+            }
+
+            const tasks = [...state.tasks]
+            const foundIndex = tasks.findIndex((task) => task._id === action.task._id)
+            tasks[foundIndex] = action.task
+
+            return {
+                ...state,
+                tasks,
+                loading: false,
+                successMessage: message
+            }
 
         default:
             return state

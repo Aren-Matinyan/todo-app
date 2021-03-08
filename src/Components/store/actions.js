@@ -87,3 +87,16 @@ export function editTask(data, from) {
             })
     }
 }
+
+export function toggleDone(task, from) {
+    return (dispatch) => {
+        dispatch({type: actionTypes.PENDING})
+        request(`${apiHost}/task/${task._id}`, "PUT", {status: task.status})
+            .then(() => {
+                dispatch({type: actionTypes.TOGGLE_DONE, task, from})
+            })
+            .catch((error) => {
+                dispatch({type: actionTypes.ERROR, error: error.message})
+            })
+    }
+}

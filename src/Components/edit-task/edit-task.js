@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 
-import PropTypes from 'prop-types'
-import DatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css"
 import moment from "moment"
-import {Button, Form, Modal} from "react-bootstrap"
+import PropTypes from 'prop-types'
 import {editTask} from "../store/actions"
 import {connect} from "react-redux"
+import {Button, Form, Modal} from "react-bootstrap"
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
 
 class EditTask extends Component {
 

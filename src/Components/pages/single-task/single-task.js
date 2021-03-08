@@ -1,13 +1,13 @@
 import React, {Component} from "react"
 
-import {Button, Card, Container, Row, Col} from "react-bootstrap"
+import EditTask from "../../edit-task/edit-task"
 import moment from "moment"
+import PropTypes from "prop-types"
+import {connect} from "react-redux"
+import {getTask, deleteTask, toggleDone} from "../../store/actions"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {faCheckCircle, faEdit, faTrashAlt} from "@fortawesome/free-solid-svg-icons"
-import EditTask from "../../edit-task/edit-task"
-import {getTask, deleteTask} from "../../store/actions"
-import {connect} from "react-redux"
-import PropTypes from "prop-types"
+import {Button, Card, Container, Row, Col} from "react-bootstrap"
 
 class SingleTask extends Component {
 
@@ -39,6 +39,16 @@ class SingleTask extends Component {
         })
     }
 
+    toggleDoneTask = () => {
+        const task = {...this.props.task}
+        if (task.status === 'done') {
+            task.status = 'active'
+        } else {
+            task.status = 'done'
+        }
+        this.props.toggleDone(task, 'single')
+    }
+
     render() {
         const {openModalEdit} = this.state
         const {task} = this.props
@@ -56,9 +66,9 @@ class SingleTask extends Component {
                                         <Card.Text> Status: {task.status === 'done' ? "Done" : "Active"} </Card.Text>
                                         <Card.Text> Created: {moment(task.created_at).format('D MMM, YYYY')} </Card.Text>
                                         <Card.Text> Date: {moment(task.date).format('D MMM, YYYY')} </Card.Text>
-                                        <Button variant='outline-success'
-                                            // onClick={toggleDone}
-                                        >
+                                        <Button
+                                            variant={task.status === 'done' ? 'outline-success' : 'outline-secondary'}
+                                            onClick={this.toggleDoneTask}>
                                             <FontAwesomeIcon icon={faCheckCircle}/>
                                         </Button>
 
@@ -86,10 +96,10 @@ class SingleTask extends Component {
 }
 
 SingleTask.propTypes = {
-    task: PropTypes.object.isRequired,
     editTaskSuccess: PropTypes.bool.isRequired,
     getTask: PropTypes.func.isRequired,
-    deleteTask: PropTypes.func.isRequired
+    deleteTask: PropTypes.func.isRequired,
+    toggleDone: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {
@@ -101,7 +111,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     getTask,
-    deleteTask
+    deleteTask,
+    toggleDone
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleTask)

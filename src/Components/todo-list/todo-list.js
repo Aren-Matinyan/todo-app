@@ -1,10 +1,10 @@
 import React from 'react'
 
-import PropTypes from 'prop-types'
 import TodoListItem from "../todo-list-item/todo-list-item"
+import PropTypes from 'prop-types'
+import {connect} from "react-redux"
 import {Row, Col} from 'react-bootstrap'
 import styles from './todo-list.module.css'
-import {connect} from "react-redux";
 
 const TodoList = ({tasks, checkItem, selectedTask}) => {
 

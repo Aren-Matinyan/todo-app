@@ -1,18 +1,19 @@
 import React, {useState, useEffect} from 'react'
 
+import EditTask from "../edit-task/edit-task"
+import moment from "moment"
+import PropTypes from "prop-types"
+import {textTruncate} from '../../helpers/utils'
+import {connect} from "react-redux"
+import {deleteTask, toggleDone} from "../store/actions"
+import {Link} from "react-router-dom"
 import {Button, Card} from 'react-bootstrap'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faTrashAlt, faCheckCircle, faEdit} from '@fortawesome/free-solid-svg-icons'
-import {Link} from "react-router-dom"
-import moment from "moment"
 import styles from './todo-list-item.module.css'
-import {textTruncate} from '../../helpers/utils'
-import {deleteTask} from "../store/actions"
-import {connect} from "react-redux"
-import EditTask from "../edit-task/edit-task"
-import PropTypes from "prop-types";
 
-const TodoListItem = ({task, deleteTask, selectedTask, checkItem, editTasksSuccess}) => {
+
+const TodoListItem = ({task, deleteTask, toggleDone, selectedTask, checkItem, editTasksSuccess}) => {
 
     const [openModalEdit, setOpenModalEdit] = useState(false)
     const toggleEditModal = () => {
@@ -22,6 +23,16 @@ const TodoListItem = ({task, deleteTask, selectedTask, checkItem, editTasksSucce
     useEffect(() => {
         setOpenModalEdit(false)
     }, [editTasksSuccess])
+
+    const toggleDoneTask = () => {
+        const sendTask = {...task}
+        if (sendTask.status === 'done') {
+            sendTask.status = 'active'
+        } else {
+            sendTask.status = 'done'
+        }
+        toggleDone(sendTask)
+    }
 
     return (
         <Card border={selectedTask.has(task._id) ? "danger" : "success"} className={styles.todoCard}>
@@ -51,7 +62,8 @@ const TodoListItem = ({task, deleteTask, selectedTask, checkItem, editTasksSucce
                 </Button>
 
                 <Button disabled={!!selectedTask.size}
-                        variant='outline-success float-right'>
+                        variant={`${task.status === 'done' ? 'outline-success' : 'outline-secondary'} float-right`}
+                        onClick={toggleDoneTask}>
                     <FontAwesomeIcon icon={faCheckCircle}/>
                 </Button>
             </Card.Body>
@@ -66,7 +78,8 @@ TodoListItem.propTypes = {
     deleteTask: PropTypes.func.isRequired,
     selectedTask: PropTypes.object.isRequired,
     checkItem: PropTypes.func.isRequired,
-    editTasksSuccess: PropTypes.bool.isRequired,
+    toggleDone: PropTypes.func.isRequired,
+    editTasksSuccess: PropTypes.bool.isRequired
 }
 
 const mapStateToProps = (state) => {
@@ -76,7 +89,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-    deleteTask
+    deleteTask,
+    toggleDone
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoListItem)

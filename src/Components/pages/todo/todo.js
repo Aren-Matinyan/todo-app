@@ -5,11 +5,11 @@ import Confirm from "../../confirm/confirm"
 import AddItem from "../../add-item/add-item"
 import SearchTask from "../../search-task/search-task"
 import Progress from "../../progress/progress"
+import PropTypes from "prop-types"
+import {connect} from 'react-redux'
 import {getTasks, deleteTask, deleteTasks} from '../../store/actions'
 import {Button, Container, Row, Col} from "react-bootstrap"
 import styles from './todo.module.css'
-import {connect} from 'react-redux'
-import PropTypes from "prop-types";
 
 class Todo extends Component {
 
@@ -92,7 +92,7 @@ class Todo extends Component {
                 <Container className={styles.todoApp}>
                     <Row>
                         <Col>
-                            <Progress tasks={tasks}/>
+                            <Progress/>
                         </Col>
                     </Row>
                     <Row>
@@ -102,7 +102,8 @@ class Todo extends Component {
                     </Row>
 
                     <Button variant="outline-primary"
-                            onClick={this.toggleNewTaskModal}>
+                            onClick={this.toggleNewTaskModal}
+                            disabled={!!selectedTask.size}>
                         Add Task
                     </Button>
                     <Button variant='outline-warning'

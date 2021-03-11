@@ -1,12 +1,12 @@
 import React, {Component, createRef} from 'react'
 
+import moment from "moment"
+import PropTypes from 'prop-types'
+import {connect} from "react-redux"
+import {addTask} from "../store/actions"
 import {Button, FormControl, Modal} from 'react-bootstrap'
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
-import moment from "moment"
-import PropTypes from 'prop-types'
-import {addTask} from "../store/actions"
-import {connect} from "react-redux"
 
 class AddItem extends Component {
 
@@ -110,13 +110,11 @@ class AddItem extends Component {
 
 AddItem.propTypes = {
     onClose: PropTypes.func.isRequired,
-    addTask: PropTypes.func.isRequired,
-    className: PropTypes.string.isRequired
+    addTask: PropTypes.func.isRequired
 }
 
 const mapDispatchToProps = {
     addTask
 }
-
 
 export default connect(null, mapDispatchToProps)(AddItem)

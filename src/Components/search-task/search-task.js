@@ -1,13 +1,13 @@
 import React, {useState} from "react"
 
+import moment from "moment"
+import PropTypes from "prop-types"
 import {connect} from 'react-redux'
+import {getTasks} from "../store/actions"
 import {textTruncate} from "../../helpers/utils"
 import {Button, Dropdown, DropdownButton, FormControl, InputGroup} from "react-bootstrap"
 import DatePicker from "react-datepicker"
-import moment from "moment"
-import {getTasks} from "../store/actions"
 import "react-datepicker/dist/react-datepicker.css"
-import PropTypes from "prop-types"
 
 const statusOptions = [
     {label: 'All', value: ''},
@@ -59,7 +59,7 @@ const SearchTask = ({getTasks}) => {
 
         for (let key in dates) {
             const value = dates[key]
-            if (value){
+            if (value) {
                 params[key] = moment(value).format("YYYY-MM-DD")
             }
         }

@@ -4,13 +4,12 @@ import TodoList from "../../todo-list/todo-list"
 import Confirm from "../../confirm/confirm"
 import AddItem from "../../add-item/add-item"
 import SearchTask from "../../search-task/search-task"
-import EditTask from "../../edit-task/edit-task"
 import Progress from "../../progress/progress"
-import StatusFilter from "../../status-filter/status-filter"
 import {getTasks, deleteTask, deleteTasks} from '../../store/actions'
 import {Button, Container, Row, Col} from "react-bootstrap"
 import styles from './todo.module.css'
 import {connect} from 'react-redux'
+import PropTypes from "prop-types";
 
 class Todo extends Component {
 
@@ -19,7 +18,6 @@ class Todo extends Component {
         showConfirm: false,
         searchValue: '',
         openNewTaskModal: false,
-        taskForEdit: null,
         statusFilter: 'All'
     }
 
@@ -31,12 +29,6 @@ class Todo extends Component {
         if (!prevProps.addTaskSuccess && this.props.addTaskSuccess) {
             this.setState({
                 openNewTaskModal: false
-            })
-            return
-        }
-        if (!prevProps.editTasksSuccess && this.props.editTasksSuccess) {
-            this.setState({
-                taskForEdit: null
             })
             return
         }
@@ -90,62 +82,10 @@ class Todo extends Component {
         })
     }
 
-    editTask = (taskForEdit) => {
-        this.setState({taskForEdit})
-    }
-
-    search = (tasks, value) => {
-        if (!value.trim) {
-            return tasks
-        }
-
-        return tasks.filter((task) => task
-            .title.toLowerCase()
-            .includes(value.toLowerCase()))
-    }
-
-    onTaskSearch = (searchValue) => {
-        this.setState({searchValue})
-    }
-
-    toggleDone = (id) => {
-
-        const tasks = [...this.state.tasks]
-        const idx = tasks.findIndex((task) => task._id === id)
-        if (tasks[idx].status === 'active') {
-            tasks[idx] = {...tasks[idx], status: 'done'}
-        } else {
-            tasks[idx] = {...tasks[idx], status: 'active'}
-        }
-
-        this.setState({tasks})
-    }
-
-    statusFilter = (tasks, filter) => {
-        switch (filter) {
-            case "All":
-                return tasks
-            case "Active":
-                return tasks.filter((task) => task.status === 'active')
-            case "Done":
-                return tasks.filter((task) => task.status === 'done')
-            default:
-                return tasks
-        }
-    }
-
-    changeFilter = (statusFilter) => {
-        this.setState({statusFilter})
-    }
-
     render() {
 
-        const {searchValue, showConfirm, selectedTask, taskForEdit, statusFilter, openNewTaskModal} = this.state
+        const {showConfirm, selectedTask, openNewTaskModal} = this.state
         const {tasks} = this.props
-
-        const visibleTasks = this.statusFilter(
-            this.search(tasks, searchValue),
-            statusFilter)
 
         return (
             <>
@@ -155,11 +95,11 @@ class Todo extends Component {
                             <Progress tasks={tasks}/>
                         </Col>
                     </Row>
-                    <div className='d-flex '>
-                        <SearchTask onTaskSearch={this.onTaskSearch}/>
-                        <StatusFilter statusFilter={statusFilter}
-                                      changeFilter={this.changeFilter}/>
-                    </div>
+                    <Row>
+                        <Col>
+                            <SearchTask/>
+                        </Col>
+                    </Row>
 
                     <Button variant="outline-primary"
                             onClick={this.toggleNewTaskModal}>
@@ -172,12 +112,9 @@ class Todo extends Component {
                             className='float-right mr-2'
                             onClick={this.selectAll}>Select all</Button>
 
-                    <TodoList tasks={visibleTasks}
+                    <TodoList tasks={tasks}
                               selectedTask={selectedTask}
-                              checkItem={this.checkItem}
-                              deleteTask={this.props.deleteTask}
-                              editTask={this.editTask}
-                              toggleDone={this.toggleDone}/>
+                              checkItem={this.checkItem}/>
                     <Button variant="outline-danger float-right"
                             disabled={!selectedTask.size}
                             onClick={this.toggleConfirm}>
@@ -188,18 +125,24 @@ class Todo extends Component {
                 {showConfirm && <Confirm onClose={this.toggleConfirm}
                                          onConfirm={this.removeSelected}
                                          count={selectedTask.size}/>}
-                {taskForEdit && <EditTask taskForEdit={taskForEdit}
-                                          onClose={() => this.editTask(null)}/>}
             </>
         )
     }
+}
+
+Todo.propTypes = {
+    tasks: PropTypes.array.isRequired,
+    addTaskSuccess: PropTypes.bool.isRequired,
+    deleteTaskSuccess: PropTypes.bool.isRequired,
+    getTasks: PropTypes.func.isRequired,
+    deleteTask: PropTypes.func.isRequired,
+    deleteTasks: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {
     return {
         tasks: state.tasks,
         addTaskSuccess: state.addTaskSuccess,
-        editTasksSuccess: state.editTasksSuccess,
         deleteTaskSuccess: state.deleteTaskSuccess
     }
 }

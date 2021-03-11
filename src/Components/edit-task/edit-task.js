@@ -5,8 +5,10 @@ import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import moment from "moment"
 import {Button, Form, Modal} from "react-bootstrap"
+import {editTask} from "../store/actions"
+import {connect} from "react-redux"
 
-export default class EditTask extends Component {
+class EditTask extends Component {
 
     state = {
         ...this.props.taskForEdit,
@@ -26,12 +28,13 @@ export default class EditTask extends Component {
         if (!title) {
             return
         }
-        this.props.onSave({
+        const editedTask = {
             ...this.state,
             title,
             description,
             date: moment(date).format("YYYY-MM-DD")
-        })
+        }
+        this.props.editTask(editedTask, this.props.from)
     }
 
     handleKeyDown = (event) => {
@@ -95,6 +98,11 @@ export default class EditTask extends Component {
 
 EditTask.propTypes = {
     taskForEdit: PropTypes.object.isRequired,
-    onSave: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired
 }
+
+const mapDispatchToProps = {
+    editTask
+}
+
+export default connect(null, mapDispatchToProps)(EditTask)

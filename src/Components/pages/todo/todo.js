@@ -7,15 +7,14 @@ import SearchTask from "../../search-task/search-task"
 import EditTask from "../../edit-task/edit-task"
 import Progress from "../../progress/progress"
 import StatusFilter from "../../status-filter/status-filter"
-
+import {getTasks, deleteTask, deleteTasks} from '../../store/actions'
 import {Button, Container, Row, Col} from "react-bootstrap"
-
 import styles from './todo.module.css'
+import {connect} from 'react-redux'
 
-export default class Todo extends Component {
+class Todo extends Component {
 
     state = {
-        tasks: [],
         selectedTask: new Set(),
         showConfirm: false,
         searchValue: '',
@@ -25,61 +24,28 @@ export default class Todo extends Component {
     }
 
     componentDidMount() {
-
-        fetch('http://localhost:3001/task', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(async (response) => {
-                const res = await response.json()
-                if (response.status >= 400 && response.status < 600) {
-                    if (res.error) {
-                        throw res.error
-                    } else {
-                        throw new Error('Something went wrong!!!')
-                    }
-                }
-
-                this.setState({
-                    tasks: res
-                })
-            })
-            .catch((error) => {
-                console.log(error)
-            })
+        this.props.getTasks()
     }
 
-    addTask = (newTask) => {
-
-        fetch('http://localhost:3001/task', {
-            method: 'POST',
-            body: JSON.stringify(newTask),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(async (response) => {
-                const res = await response.json()
-                if (response.status >= 400 && response.status < 600) {
-                    if (res.error) {
-                        throw res.error
-                    } else {
-                        throw new Error('Something went wrong!!!')
-                    }
-                }
-
-                const tasks = [...this.state.tasks, res]
-
-                this.setState({
-                    tasks,
-                    openNewTaskModal: false
-                })
+    componentDidUpdate(prevProps) {
+        if (!prevProps.addTaskSuccess && this.props.addTaskSuccess) {
+            this.setState({
+                openNewTaskModal: false
             })
-            .catch((error) => {
-                console.log(error)
+            return
+        }
+        if (!prevProps.editTasksSuccess && this.props.editTasksSuccess) {
+            this.setState({
+                taskForEdit: null
             })
+            return
+        }
+        if (!prevProps.deleteTaskSuccess && this.props.deleteTaskSuccess) {
+            this.setState({
+                showConfirm: false,
+                selectedTask: new Set()
+            })
+        }
     }
 
     toggleNewTaskModal = () => {
@@ -100,70 +66,9 @@ export default class Todo extends Component {
         })
     }
 
-    deleteTask = (taskId) => {
-
-        fetch(`http://localhost:3001/task/${taskId}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(async (response) => {
-                const res = await response.json()
-                if (response.status >= 400 && response.status < 600) {
-                    if (res.error) {
-                        throw res.error
-                    } else {
-                        throw new Error('Something went wrong!!!')
-                    }
-                }
-
-                const newArr = this.state.tasks.filter(el => el._id !== taskId)
-                this.setState({
-                    tasks: newArr
-                })
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-    }
-
     removeSelected = () => {
-        const {selectedTask, tasks} = this.state
-
-        const body = {tasks:[...selectedTask]}
-
-        fetch(`http://localhost:3001/task`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        })
-            .then(async (response) => {
-                const res = await response.json()
-                if (response.status >= 400 && response.status < 600) {
-                    if (res.error) {
-                        throw res.error
-                    } else {
-                        throw new Error('Something went wrong!!!')
-                    }
-                }
-
-                const newTask = tasks.filter((task) => !selectedTask.has(task._id))
-
-                this.setState({
-                    tasks: newTask,
-                    selectedTask: new Set(),
-                    showConfirm: false
-                })
-
-
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-
+        const {selectedTask} = this.state
+        this.props.deleteTasks(selectedTask)
     }
 
     toggleConfirm = () => {
@@ -173,7 +78,7 @@ export default class Todo extends Component {
     }
 
     selectAll = () => {
-        const selectAll = this.state.tasks.map((task) => task._id)
+        const selectAll = this.props.tasks.map((task) => task._id)
         this.setState({
             selectedTask: new Set(selectAll)
         })
@@ -187,39 +92,6 @@ export default class Todo extends Component {
 
     editTask = (taskForEdit) => {
         this.setState({taskForEdit})
-    }
-
-    saveEditedTask = (editedTask) => {
-        const tasks = [...this.state.tasks]
-
-        fetch(`http://localhost:3001/task/${editedTask._id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(editedTask)
-        })
-            .then(async (response) => {
-                const res = await response.json()
-                if (response.status >= 400 && response.status < 600) {
-                    if (res.error) {
-                        throw res.error
-                    } else {
-                        throw new Error('Something went wrong!!!')
-                    }
-                }
-
-                const idx = tasks.findIndex((task) => task._id === editedTask._id)
-                tasks[idx] = editedTask
-
-                this.setState({
-                    tasks,
-                    taskForEdit: null
-                })
-            })
-            .catch((error) => {
-                console.log(error)
-            })
     }
 
     search = (tasks, value) => {
@@ -247,7 +119,6 @@ export default class Todo extends Component {
         }
 
         this.setState({tasks})
-
     }
 
     statusFilter = (tasks, filter) => {
@@ -269,7 +140,8 @@ export default class Todo extends Component {
 
     render() {
 
-        const {tasks, searchValue, showConfirm, selectedTask, taskForEdit, statusFilter, openNewTaskModal} = this.state
+        const {searchValue, showConfirm, selectedTask, taskForEdit, statusFilter, openNewTaskModal} = this.state
+        const {tasks} = this.props
 
         const visibleTasks = this.statusFilter(
             this.search(tasks, searchValue),
@@ -303,7 +175,7 @@ export default class Todo extends Component {
                     <TodoList tasks={visibleTasks}
                               selectedTask={selectedTask}
                               checkItem={this.checkItem}
-                              deleteTask={this.deleteTask}
+                              deleteTask={this.props.deleteTask}
                               editTask={this.editTask}
                               toggleDone={this.toggleDone}/>
                     <Button variant="outline-danger float-right"
@@ -312,16 +184,30 @@ export default class Todo extends Component {
                         Remove selected
                     </Button>
                 </Container>
-                {openNewTaskModal && <AddItem className='modal'
-                                              onClose={this.toggleNewTaskModal}
-                                              onAdd={this.addTask}/>}
+                {openNewTaskModal && <AddItem onClose={this.toggleNewTaskModal}/>}
                 {showConfirm && <Confirm onClose={this.toggleConfirm}
                                          onConfirm={this.removeSelected}
                                          count={selectedTask.size}/>}
                 {taskForEdit && <EditTask taskForEdit={taskForEdit}
-                                          onSave={this.saveEditedTask}
                                           onClose={() => this.editTask(null)}/>}
             </>
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        tasks: state.tasks,
+        addTaskSuccess: state.addTaskSuccess,
+        editTasksSuccess: state.editTasksSuccess,
+        deleteTaskSuccess: state.deleteTaskSuccess
+    }
+}
+
+const mapDispatchToProps = {
+    getTasks,
+    deleteTask,
+    deleteTasks,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Todo)

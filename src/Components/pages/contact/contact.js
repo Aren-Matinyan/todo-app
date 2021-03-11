@@ -142,7 +142,6 @@ const Contact = () => {
                                 Send
                             </Button>
                         </div>
-
                     </Form>
                 </Col>
             </Row>

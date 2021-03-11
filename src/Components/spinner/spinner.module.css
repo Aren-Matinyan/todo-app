@@ -1,0 +1,89 @@
+@keyframes ldsDoubleRing {
+    0% {
+        -webkit-transform: rotate(0);
+        transform: rotate(0);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes ldsDoubleRing {
+    0% {
+        -webkit-transform: rotate(0);
+        transform: rotate(0);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@keyframes ldsDoubleRing_reverse {
+    0% {
+        -webkit-transform: rotate(0);
+        transform: rotate(0);
+    }
+    100% {
+        -webkit-transform: rotate(-360deg);
+        transform: rotate(-360deg);
+    }
+}
+@-webkit-keyframes ldsDoubleRing_reverse {
+    0% {
+        -webkit-transform: rotate(0);
+        transform: rotate(0);
+    }
+    100% {
+        -webkit-transform: rotate(-360deg);
+        transform: rotate(-360deg);
+    }
+}
+
+.ldsCss {
+    margin: 0 auto;
+}
+
+.ldsDoubleRing {
+    position: relative;
+}
+.ldsDoubleRing div {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    top: 20px;
+    left: 20px;
+    border-radius: 50%;
+    border: 8px solid #000;
+    border-color: #3d7ec0 transparent #3d7ec0 transparent;
+    -webkit-animation: ldsDoubleRing 1.5s linear infinite;
+    animation: ldsDoubleRing 1.5s linear infinite;
+}
+.ldsDoubleRing div:nth-child(2) {
+    width: 140px;
+    height: 140px;
+    top: 30px;
+    left: 30px;
+    border-color: transparent #cc4545 transparent #cc4545;
+    -webkit-animation: ldsDoubleRing_reverse 1.5s linear infinite;
+    animation: ldsDoubleRing_reverse 1.5s linear infinite;
+}
+.ldsDoubleRing {
+    width: 77px !important;
+    height: 77px !important;
+    -webkit-transform: translate(-38.5px, -38.5px) scale(0.385) translate(39px, 39px);
+    transform: translate(-38.5px, -38.5px) scale(0.385) translate(39px, 39px);
+}
+
+.spinner {
+    background-color: rgba(0,0,0, 0.4);
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}

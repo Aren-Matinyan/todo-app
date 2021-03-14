@@ -1,0 +1,24 @@
+.main{
+    margin-top: 30px;
+}
+
+.heading{
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.loginButton {
+    width: 100%;
+    font-weight: bold;
+}
+
+.registerButton {
+    margin-top: 10px;
+    width: 60%;
+    font-weight: bold;
+}
+
+.invalid{
+    border: 1px solid red !important;
+}

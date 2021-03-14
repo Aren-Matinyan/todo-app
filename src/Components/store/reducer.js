@@ -107,7 +107,7 @@ export default function reducer(state = defaultState, action) {
         }
         case actionTypes.TOGGLE_DONE:
             let message = ""
-            action.task.status === "done" ? (message = "Task completed") : (message = "Task not completed yet")
+            action.task.status === "done" ? (message = "Task completed") : (message = "Task is active again")
 
             if (action.from === 'single') {
                 return {

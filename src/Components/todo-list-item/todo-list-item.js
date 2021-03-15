@@ -9,9 +9,8 @@ import {deleteTask, toggleDone} from "../store/actions"
 import {Link} from "react-router-dom"
 import {Button, Card} from 'react-bootstrap'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faTrashAlt, faCheckCircle, faEdit} from '@fortawesome/free-solid-svg-icons'
+import {faTrashAlt, faCheck, faEdit, faHistory} from '@fortawesome/free-solid-svg-icons'
 import styles from './todo-list-item.module.css'
-
 
 const TodoListItem = ({task, deleteTask, toggleDone, selectedTask, checkItem, editTasksSuccess}) => {
 
@@ -35,7 +34,8 @@ const TodoListItem = ({task, deleteTask, toggleDone, selectedTask, checkItem, ed
     }
 
     return (
-        <Card border={selectedTask.has(task._id) ? "danger" : "success"} className={styles.todoCard}>
+        <Card border={selectedTask.has(task._id) ? "danger" : (task.status === "done" ? "success" : "secondary")}
+              className={styles.todoCard}>
             <Card.Body>
                 <input type="checkbox"
                        onChange={checkItem}
@@ -62,9 +62,9 @@ const TodoListItem = ({task, deleteTask, toggleDone, selectedTask, checkItem, ed
                 </Button>
 
                 <Button disabled={!!selectedTask.size}
-                        variant={`${task.status === 'done' ? 'outline-success' : 'outline-secondary'} float-right`}
+                        variant={`${task.status === 'done' ? 'outline-secondary' : 'outline-success'} float-right`}
                         onClick={toggleDoneTask}>
-                    <FontAwesomeIcon icon={faCheckCircle}/>
+                    <FontAwesomeIcon icon={task.status === 'done' ? faHistory : faCheck}/>
                 </Button>
             </Card.Body>
             {openModalEdit && <EditTask taskForEdit={task}

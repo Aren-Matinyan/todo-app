@@ -6,7 +6,7 @@ import PropTypes from "prop-types"
 import {connect} from "react-redux"
 import {getTask, deleteTask, toggleDone} from "../../store/actions"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {faCheckCircle, faEdit, faTrashAlt} from "@fortawesome/free-solid-svg-icons"
+import {faCheck, faEdit, faTrashAlt, faHistory} from "@fortawesome/free-solid-svg-icons"
 import {Button, Card, Container, Row, Col} from "react-bootstrap"
 
 class SingleTask extends Component {
@@ -67,9 +67,9 @@ class SingleTask extends Component {
                                         <Card.Text> Created: {moment(task.created_at).format('D MMM, YYYY')} </Card.Text>
                                         <Card.Text> Date: {moment(task.date).format('D MMM, YYYY')} </Card.Text>
                                         <Button
-                                            variant={task.status === 'done' ? 'outline-success' : 'outline-secondary'}
+                                            variant={task.status === 'done' ? 'outline-secondary' : 'outline-success'}
                                             onClick={this.toggleDoneTask}>
-                                            <FontAwesomeIcon icon={faCheckCircle}/>
+                                            <FontAwesomeIcon icon={task.status === 'done' ? faHistory : faCheck}/>
                                         </Button>
 
                                         <Button variant="outline-warning"

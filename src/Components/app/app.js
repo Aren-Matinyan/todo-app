@@ -4,6 +4,8 @@ import Todo from "../pages/todo/todo"
 import About from "../pages/about/about"
 import Contact from "../pages/contact/contact"
 import NotFound from "../pages/not-found/not-found"
+import Register from "../pages/register/register"
+import Login from "../pages/login/login"
 import NavMenu from "../nav-menu/nav-menu"
 import SingleTask from "../pages/single-task/single-task"
 import Spinner from "../spinner/spinner"
@@ -51,6 +53,12 @@ function App({loading, successMessage, errorMessage}) {
                            exact/>
                     <Route path='/task/:taskId'
                            component={SingleTask}
+                           exact/>
+                    <Route path='/register'
+                           component={Register}
+                           exact/>
+                    <Route path='/login'
+                           component={Login}
                            exact/>
 
                     <Route path='/not-found'

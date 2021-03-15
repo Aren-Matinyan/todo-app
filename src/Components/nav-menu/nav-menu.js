@@ -27,6 +27,19 @@ const NavMenu = () => {
                          className={styles.navLink}>
                     Contact us
                 </NavLink>
+
+
+                <NavLink to='/register' exact
+                         activeClassName={styles.active}
+                         className={styles.navLink}>
+                    Register
+                </NavLink>
+                <NavLink to='/login' exact
+                         activeClassName={styles.active}
+                         className={styles.navLink}>
+                    Login
+                </NavLink>
+
             </Nav>
         </Navbar>
     )

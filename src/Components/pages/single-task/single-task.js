@@ -59,13 +59,14 @@ class SingleTask extends Component {
                     <Row>
                         <Col xs={12}>
                             {task ?
-                                <Card className='text-center'>
+                                <Card className='text-center'
+                                      border={task.status === "done" ? "success" : "secondary"}>
                                     <Card.Body>
                                         <Card.Title>{task.title}</Card.Title>
                                         <Card.Text> Description: {task.description} </Card.Text>
                                         <Card.Text> Status: {task.status === 'done' ? "Done" : "Active"} </Card.Text>
                                         <Card.Text> Created: {moment(task.created_at).format('D MMM, YYYY')} </Card.Text>
-                                        <Card.Text> Date: {moment(task.date).format('D MMM, YYYY')} </Card.Text>
+                                        <Card.Text> Due date: {moment(task.date).format('D MMM, YYYY')} </Card.Text>
                                         <Button
                                             variant={task.status === 'done' ? 'outline-secondary' : 'outline-success'}
                                             onClick={this.toggleDoneTask}>

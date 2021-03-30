@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 
+import {login} from "../../store/actions"
+import {connect} from "react-redux"
 import {Form, Button, Container, Row, Col} from 'react-bootstrap'
 import styles from './login.module.css'
 
@@ -21,6 +23,10 @@ function Login(props) {
             email: email ? null : 'Email is required',
             password: password ? null : 'Password is required'
         })
+
+        if (email && password) {
+            props.login(values)
+        }
     }
 
     const handleChange = ({target: {name, value}}) => {
@@ -82,9 +88,12 @@ function Login(props) {
                     </Col>
                 </Row>
             </Container>
-
         </div>
     )
 }
 
-export default Login
+const mapDispatchToProps = {
+    login
+}
+
+export default connect(null, mapDispatchToProps)(Login)

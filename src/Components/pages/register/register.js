@@ -1,11 +1,12 @@
 import React, {useState} from 'react'
 
 import {connect} from 'react-redux'
+import {register} from "../../store/actions"
 import {Link} from 'react-router-dom'
 import {Form, Button, Container, Row, Col} from 'react-bootstrap'
 import styles from './register.module.css'
 
-function Register() {
+function Register({register}) {
     const [values, setValues] = useState({
         name: '',
         surname: '',
@@ -64,7 +65,7 @@ function Register() {
         })
 
         if (valid) {
-            console.log(values)
+            register(values)
         }
     }
 
@@ -125,4 +126,8 @@ function Register() {
     )
 }
 
-export default connect()(Register)
+const mapDispatchToProps = {
+    register
+}
+
+export default connect(null, mapDispatchToProps)(Register)

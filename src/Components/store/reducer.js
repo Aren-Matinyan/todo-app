@@ -1,4 +1,5 @@
 import * as actionTypes from './action-types'
+import {checkLoginStatus} from "../../helpers/auth";
 
 const defaultState = {
     tasks: [],
@@ -9,7 +10,8 @@ const defaultState = {
     deleteTaskSuccess: false,
     loading: false,
     successMessage: null,
-    errorMessage: null
+    errorMessage: null,
+    isAuthenticated: checkLoginStatus()
 }
 
 export default function reducer(state = defaultState, action) {
@@ -127,6 +129,24 @@ export default function reducer(state = defaultState, action) {
                 tasks,
                 loading: false,
                 successMessage: message
+            }
+        case actionTypes.REGISTER:
+            return {
+                ...state,
+                loading: false,
+                successMessage: 'Registration completed successfully'
+            }
+        case actionTypes.LOGIN:
+            return {
+                ...state,
+                loading: false,
+                isAuthenticated: true
+            }
+        case actionTypes.LOGOUT:
+            return {
+                ...state,
+                loading: false,
+                isAuthenticated: false
             }
 
         default:

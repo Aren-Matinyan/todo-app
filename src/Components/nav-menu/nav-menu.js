@@ -1,10 +1,12 @@
 import React from "react"
 
-import {Navbar, Nav} from "react-bootstrap"
+import {connect} from 'react-redux'
+import {logout} from "../../helpers/auth"
+import {Navbar, Nav, Button} from "react-bootstrap"
 import {NavLink} from "react-router-dom"
 import styles from './nav-menu.module.css'
 
-const NavMenu = () => {
+const NavMenu = ({isAuthenticated}) => {
     return (
         <Navbar bg="dark" variant="dark">
             <NavLink to='/' exact
@@ -12,11 +14,12 @@ const NavMenu = () => {
                 ToDo List
             </NavLink>
             <Nav>
+                {isAuthenticated &&
                 <NavLink to='/' exact
                          activeClassName={styles.active}
                          className={styles.navLink}>
                     Home
-                </NavLink>
+                </NavLink>}
                 <NavLink to='/about' exact
                          activeClassName={styles.active}
                          className={styles.navLink}>
@@ -28,21 +31,20 @@ const NavMenu = () => {
                     Contact us
                 </NavLink>
 
-
-                <NavLink to='/register' exact
-                         activeClassName={styles.active}
-                         className={styles.navLink}>
-                    Register
-                </NavLink>
-                <NavLink to='/login' exact
-                         activeClassName={styles.active}
-                         className={styles.navLink}>
-                    Login
-                </NavLink>
-
+                {isAuthenticated &&
+                <Button onClick={logout}>
+                    Log Out
+                </Button>
+                }
             </Nav>
         </Navbar>
     )
 }
 
-export default NavMenu
+const mapStateToProps = (state) => {
+    return {
+        isAuthenticated: state.isAuthenticated
+    }
+}
+
+export default connect(mapStateToProps)(NavMenu)

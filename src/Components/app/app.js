@@ -9,9 +9,10 @@ import Login from "../pages/login/login"
 import NavMenu from "../nav-menu/nav-menu"
 import SingleTask from "../pages/single-task/single-task"
 import Spinner from "../spinner/spinner"
+import AuthRoute from '../auth-route'
 import {connect} from 'react-redux'
 import {history} from "../../helpers/history"
-import {Router, Route, Switch, Redirect} from "react-router-dom"
+import {Router, Switch, Route, Redirect} from "react-router-dom"
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {ToastContainer, toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -42,24 +43,28 @@ function App({loading, successMessage, errorMessage}) {
             <Router history={history}>
                 <NavMenu/>
                 <Switch>
-                    <Route path='/'
-                           component={Todo}
-                           exact/>
+                    <AuthRoute path='/'
+                               component={Todo}
+                               type='private'
+                               exact/>
                     <Route path='/about'
-                           component={About}
-                           exact/>
+                               component={About}
+                               exact/>
                     <Route path='/contact'
-                           component={Contact}
-                           exact/>
-                    <Route path='/task/:taskId'
-                           component={SingleTask}
-                           exact/>
-                    <Route path='/register'
-                           component={Register}
-                           exact/>
-                    <Route path='/login'
-                           component={Login}
-                           exact/>
+                               component={Contact}
+                               exact/>
+                    <AuthRoute path='/task/:taskId'
+                               component={SingleTask}
+                               type='private'
+                               exact/>
+                    <AuthRoute path='/register'
+                               component={Register}
+                               type='public'
+                               exact/>
+                    <AuthRoute path='/login'
+                               component={Login}
+                               type='public'
+                               exact/>
 
                     <Route path='/not-found'
                            component={NotFound}
@@ -77,7 +82,7 @@ const mapStateToProps = (state) => {
     return {
         loading: state.loading,
         successMessage: state.successMessage,
-        errorMessage: state.errorMessage
+        errorMessage: state.errorMessage,
     }
 }
 

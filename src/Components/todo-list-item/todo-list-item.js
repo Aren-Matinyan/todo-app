@@ -47,7 +47,7 @@ const TodoListItem = ({task, deleteTask, toggleDone, selectedTask, checkItem, ed
                 <Card.Text> Description: {textTruncate(task.description, 60)} </Card.Text>
                 <Card.Text> Status: {task.status === 'done' ? "Done" : "Active"} </Card.Text>
                 <Card.Text> Created: {moment(task.created_at).format('D MMM, YYYY')} </Card.Text>
-                <Card.Text> Date: {moment(task.date).format('D MMM, YYYY')} </Card.Text>
+                <Card.Text> Due date: {moment(task.date).format('D MMM, YYYY')} </Card.Text>
                 <Button onClick={() => deleteTask(task._id)}
                         disabled={!!selectedTask.size}
                         variant='outline-danger float-right'>

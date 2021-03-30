@@ -3,7 +3,7 @@ import React, {Component, createRef} from 'react'
 import moment from "moment"
 import PropTypes from 'prop-types'
 import {connect} from "react-redux"
-import {addTask} from "../store/actions"
+import {addTask} from "../../store/actions"
 import {Button, FormControl, Modal} from 'react-bootstrap'
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
@@ -24,9 +24,7 @@ class AddItem extends Component {
         this.titleRef.current.focus()
     }
 
-    handleChange = (event) => {
-        const {name, value} = event.target
-
+    handleChange = ({target: {name, value}}) => {
         this.setState({
             [name]: value
         })

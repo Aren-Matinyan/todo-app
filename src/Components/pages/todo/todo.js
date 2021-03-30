@@ -7,7 +7,7 @@ import SearchTask from "../../search-task/search-task"
 import Progress from "../../progress/progress"
 import PropTypes from "prop-types"
 import {connect} from 'react-redux'
-import {getTasks, deleteTask, deleteTasks} from '../../store/actions'
+import {getTasks, deleteTask, deleteTasks} from '../../../store/actions'
 import {Button, Container, Row, Col} from "react-bootstrap"
 import styles from './todo.module.css'
 

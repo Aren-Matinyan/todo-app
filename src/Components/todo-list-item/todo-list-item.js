@@ -5,7 +5,7 @@ import moment from "moment"
 import PropTypes from "prop-types"
 import {textTruncate} from '../../helpers/utils'
 import {connect} from "react-redux"
-import {deleteTask, toggleDone} from "../store/actions"
+import {deleteTask, toggleDone} from "../../store/actions"
 import {Link} from "react-router-dom"
 import {Button, Card} from 'react-bootstrap'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'

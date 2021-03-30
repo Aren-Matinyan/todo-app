@@ -1,8 +1,8 @@
-import React, {Component} from 'react'
+import React, {Component, createRef} from 'react'
 
 import moment from "moment"
 import PropTypes from 'prop-types'
-import {editTask} from "../store/actions"
+import {editTask} from "../../store/actions"
 import {connect} from "react-redux"
 import {Button, Form, Modal} from "react-bootstrap"
 import DatePicker from "react-datepicker"
@@ -13,6 +13,12 @@ class EditTask extends Component {
     state = {
         ...this.props.taskForEdit,
         date: new Date(this.props.taskForEdit.date)
+    }
+
+    titleRef = createRef()
+
+    componentDidMount() {
+        this.titleRef.current.focus()
     }
 
     handleChange = (event, propName) => {
@@ -71,7 +77,8 @@ class EditTask extends Component {
                                   onChange={(event) => this.handleChange(event, "title")}
                                   onKeyDown={this.handleKeyDown}
                                   value={title}
-                                  className='mb-3'/>
+                                  className='mb-3'
+                                  ref={this.titleRef}/>
 
                     <Form.Control as="textarea" rows={3}
                                   placeholder="Description"

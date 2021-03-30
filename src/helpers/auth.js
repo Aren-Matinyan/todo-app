@@ -1,6 +1,6 @@
 import decode from 'jwt-decode'
-import {store} from "../Components/store/store"
-import {LOGOUT} from "../Components/store/action-types"
+import {store} from "../store/store"
+import {LOGOUT} from "../store/action-types"
 import {history} from "./history"
 
 export default function requestWithoutToken(url, method = 'GET', body) {

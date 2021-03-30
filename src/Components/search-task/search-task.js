@@ -3,7 +3,7 @@ import React, {useState} from "react"
 import moment from "moment"
 import PropTypes from "prop-types"
 import {connect} from 'react-redux'
-import {getTasks} from "../store/actions"
+import {getTasks} from "../../store/actions"
 import {Button, Dropdown, DropdownButton, FormControl, InputGroup} from "react-bootstrap"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"

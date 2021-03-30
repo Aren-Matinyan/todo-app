@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 
 import {connect} from 'react-redux'
-import {register} from "../../store/actions"
+import {register} from "../../../store/actions"
 import {Link} from 'react-router-dom'
 import {Form, Button, Container, Row, Col} from 'react-bootstrap'
 import styles from './register.module.css'
@@ -30,6 +30,14 @@ function Register({register}) {
         let emailMessage = null
         let passwordMessage = null
         let confirmPasswordMessage = null
+
+        if (!name) {
+            valid = false
+        }
+
+        if (!surname) {
+            valid = false
+        }
 
         const emailReg = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/
         if (!email) {

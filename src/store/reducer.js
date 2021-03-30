@@ -1,5 +1,5 @@
 import * as actionTypes from './action-types'
-import {checkLoginStatus} from "../../helpers/auth";
+import {checkLoginStatus} from "../helpers/auth";
 
 const defaultState = {
     tasks: [],
@@ -8,6 +8,7 @@ const defaultState = {
     editTaskSuccess: false,
     editTasksSuccess: false,
     deleteTaskSuccess: false,
+    formSentSuccess: false,
     loading: false,
     successMessage: null,
     errorMessage: null,
@@ -25,6 +26,7 @@ export default function reducer(state = defaultState, action) {
                 editTaskSuccess: false,
                 editTasksSuccess: false,
                 deleteTaskSuccess: false,
+                formSentSuccess: false,
                 successMessage: null,
                 errorMessage: null
             }
@@ -147,6 +149,13 @@ export default function reducer(state = defaultState, action) {
                 ...state,
                 loading: false,
                 isAuthenticated: false
+            }
+        case actionTypes.SEND_CONTACT_FORM:
+            return {
+                ...state,
+                loading: false,
+                formSentSuccess: true,
+                successMessage: 'Form sent successfully'
             }
 
         default:

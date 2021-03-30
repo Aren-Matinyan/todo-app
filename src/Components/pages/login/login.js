@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-import {login} from "../../store/actions"
+import {login} from "../../../store/actions"
 import {connect} from "react-redux"
 import {Form, Button, Container, Row, Col} from 'react-bootstrap'
 import styles from './login.module.css'

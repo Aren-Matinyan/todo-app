@@ -1,8 +1,8 @@
-import request from "../../helpers/request"
-import requestWithoutToken from "../../helpers/auth"
+import request from "../helpers/request"
+import requestWithoutToken from "../helpers/auth"
 import * as actionTypes from './action-types'
-import {history} from "../../helpers/history"
-import {saveToken} from "../../helpers/auth"
+import {history} from "../helpers/history"
+import {saveToken} from "../helpers/auth"
 
 const apiHost = process.env.REACT_APP_API_HOST
 
@@ -132,6 +132,19 @@ export function login(data) {
                 saveToken(res)
                 dispatch({type: actionTypes.LOGIN})
                 history.push('/')
+            })
+            .catch((error) => {
+                dispatch({type: actionTypes.ERROR, error: error.message})
+            })
+    }
+}
+
+export function sendContactForm(data) {
+    return (dispatch) => {
+        dispatch({type: actionTypes.PENDING})
+        requestWithoutToken(`${apiHost}/form`, "POST", data)
+            .then(() => {
+                dispatch({type: actionTypes.SEND_CONTACT_FORM})
             })
             .catch((error) => {
                 dispatch({type: actionTypes.ERROR, error: error.message})

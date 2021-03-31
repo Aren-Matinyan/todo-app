@@ -107,8 +107,13 @@ class Todo extends Component {
                             disabled={!!selectedTask.size}>
                         Add Task
                     </Button>
+                    <Button variant="outline-danger float-right"
+                            disabled={!selectedTask.size}
+                            onClick={this.toggleConfirm}>
+                        Remove selected
+                    </Button>
                     <Button variant='outline-warning'
-                            className='float-right'
+                            className='float-right  mr-2'
                             onClick={this.deSelectAll}>Deselect all</Button>
                     <Button variant='outline-warning'
                             className='float-right mr-2'
@@ -117,11 +122,7 @@ class Todo extends Component {
                     <TodoList tasks={tasks}
                               selectedTask={selectedTask}
                               checkItem={this.checkItem}/>
-                    <Button variant="outline-danger float-right"
-                            disabled={!selectedTask.size}
-                            onClick={this.toggleConfirm}>
-                        Remove selected
-                    </Button>
+
                 </Container>
                 {openNewTaskModal && <AddItem onClose={this.toggleNewTaskModal}/>}
                 {showConfirm && <Confirm onClose={this.toggleConfirm}

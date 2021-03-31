@@ -164,3 +164,20 @@ export function getUser() {
             })
     }
 }
+
+export function logout() {
+    const token = localStorage.getItem('token')
+    const parsed = JSON.parse(token)
+
+    return (dispatch) => {
+        dispatch({type: actionTypes.PENDING})
+        request(`${apiHost}/user/sign-out`, 'POST',{jwt: parsed.jwt})
+            .then(() => {
+                localStorage.removeItem('token')
+                dispatch({type: actionTypes.LOGOUT})
+            })
+            .catch((error) => {
+                dispatch({type: actionTypes.ERROR, error: error.message})
+            })
+    }
+}

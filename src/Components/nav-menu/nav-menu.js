@@ -1,12 +1,12 @@
 import React from "react"
 
 import {connect} from 'react-redux'
-import {logout} from "../../helpers/auth"
 import {Navbar, Nav, Button} from "react-bootstrap"
 import {NavLink} from "react-router-dom"
 import styles from './nav-menu.module.css'
+import {logout} from "../../store/actions"
 
-const NavMenu = ({isAuthenticated, user}) => {
+const NavMenu = ({isAuthenticated, user, logout}) => {
     return (
         <Navbar bg="dark" variant="dark">
             <NavLink to='/' exact
@@ -51,4 +51,8 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(NavMenu)
+const mapDispatchToProps = {
+    logout
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavMenu)

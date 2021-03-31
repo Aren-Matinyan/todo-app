@@ -151,3 +151,16 @@ export function sendContactForm(data) {
             })
     }
 }
+
+export function getUser() {
+    return (dispatch) => {
+        dispatch({type: actionTypes.PENDING})
+        request(`${apiHost}/user`)
+            .then((user) => {
+                dispatch({type: actionTypes.GET_USER, user})
+            })
+            .catch((error) => {
+                dispatch({type: actionTypes.ERROR, error: error.message})
+            })
+    }
+}

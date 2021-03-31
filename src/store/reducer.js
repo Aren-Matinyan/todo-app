@@ -4,6 +4,7 @@ import {checkLoginStatus} from "../helpers/auth";
 const defaultState = {
     tasks: [],
     task: null,
+    user: null,
     addTaskSuccess: false,
     editTaskSuccess: false,
     editTasksSuccess: false,
@@ -148,7 +149,8 @@ export default function reducer(state = defaultState, action) {
             return {
                 ...state,
                 loading: false,
-                isAuthenticated: false
+                isAuthenticated: false,
+                user: null,
             }
         case actionTypes.SEND_CONTACT_FORM:
             return {
@@ -156,6 +158,11 @@ export default function reducer(state = defaultState, action) {
                 loading: false,
                 formSentSuccess: true,
                 successMessage: 'Form sent successfully'
+            }
+        case actionTypes.GET_USER:
+            return {
+                ...state,
+                user: action.user
             }
 
         default:

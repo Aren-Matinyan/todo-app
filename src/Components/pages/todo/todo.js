@@ -7,7 +7,7 @@ import SearchTask from "../../search-task/search-task"
 import Progress from "../../progress/progress"
 import PropTypes from "prop-types"
 import {connect} from 'react-redux'
-import {getTasks, deleteTask, deleteTasks} from '../../../store/actions'
+import {getTasks, deleteTask, deleteTasks, getUser} from '../../../store/actions'
 import {Button, Container, Row, Col} from "react-bootstrap"
 import styles from './todo.module.css'
 
@@ -23,6 +23,7 @@ class Todo extends Component {
 
     componentDidMount() {
         this.props.getTasks()
+        this.props.getUser()
     }
 
     componentDidUpdate(prevProps) {
@@ -152,6 +153,7 @@ const mapDispatchToProps = {
     getTasks,
     deleteTask,
     deleteTasks,
+    getUser
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Todo)

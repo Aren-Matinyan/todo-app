@@ -6,7 +6,7 @@ import {Navbar, Nav, Button} from "react-bootstrap"
 import {NavLink} from "react-router-dom"
 import styles from './nav-menu.module.css'
 
-const NavMenu = ({isAuthenticated}) => {
+const NavMenu = ({isAuthenticated, user}) => {
     return (
         <Navbar bg="dark" variant="dark">
             <NavLink to='/' exact
@@ -36,6 +36,9 @@ const NavMenu = ({isAuthenticated}) => {
                     Log Out
                 </Button>
                 }
+
+                {user ? <span>{`${user.name} ${user.surname}`}</span> : null}
+
             </Nav>
         </Navbar>
     )
@@ -43,7 +46,8 @@ const NavMenu = ({isAuthenticated}) => {
 
 const mapStateToProps = (state) => {
     return {
-        isAuthenticated: state.isAuthenticated
+        isAuthenticated: state.isAuthenticated,
+        user: state.user
     }
 }
 

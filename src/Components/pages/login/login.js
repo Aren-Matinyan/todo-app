@@ -20,8 +20,8 @@ function Login(props) {
         const {email, password} = values
 
         setErrors({
-            email: email ? null : 'Email is required',
-            password: password ? null : 'Password is required'
+            email: email.trim() ? null : 'Email is required',
+            password: password.trim() ? null : 'Password is required'
         })
 
         if (email && password) {

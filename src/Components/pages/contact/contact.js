@@ -34,16 +34,16 @@ function Contact({sendContactForm, formSentSuccess}) {
 
         let emailMessage = null
 
-        if (!name) {
+        if (!name.trim()) {
             valid = false
         }
 
-        if (!message) {
+        if (!message.trim()) {
             valid = false
         }
 
         const emailReg = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/
-        if (!email) {
+        if (!email.trim()) {
             emailMessage = 'Email is required'
             valid = false
         } else if (!emailReg.test(email)) {
@@ -52,9 +52,9 @@ function Contact({sendContactForm, formSentSuccess}) {
         }
 
         setErrors({
-            name: name ? null : 'Name is required',
+            name: name.trim() ? null : 'Name is required',
             email: emailMessage,
-            message: message ? null : 'Message is required'
+            message: message.trim() ? null : 'Message is required'
         })
 
         if (valid) {

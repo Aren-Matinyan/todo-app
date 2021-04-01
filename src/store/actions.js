@@ -194,3 +194,16 @@ export function changePassword(data) {
             })
     }
 }
+
+export function changeInfo(data) {
+    return (dispatch) => {
+        dispatch({type: actionTypes.PENDING})
+        request(`${apiHost}/user`, 'PUT', data)
+            .then(() => {
+                dispatch({type: actionTypes.CHANGE_INFO})
+            })
+            .catch((error) => {
+                dispatch({type: actionTypes.ERROR, error: error.message})
+            })
+    }
+}

@@ -1,74 +1,52 @@
 import React, {useEffect, useState} from 'react'
 
 import {connect} from "react-redux"
-import {changePassword} from "../../../store/actions"
+import {changeInfo, getUser} from "../../../store/actions"
 import {Button, Form, Modal} from "react-bootstrap"
-import styles from './change-password.module.css'
+import styles from './update-info.module.css'
 
-function ChangePassword({onHide, show, changePassword, passwordChangeSuccess}) {
+function UpdateInfo({onHide, show, user, changeInfo, getUser}) {
 
     const [values, setValues] = useState({
-        oldPassword: '',
-        newPassword: '',
-        confirmNewPassword: ''
+        name: '',
+        surname: ''
     })
 
     const [errors, setErrors] = useState({
-        oldPassword: null,
-        newPassword: null,
-        confirmNewPassword: null
+        name: null,
+        surname: null
     })
 
     useEffect(() => {
-        if (passwordChangeSuccess) {
+        if (user) {
             setValues({
-                oldPassword: '',
-                newPassword: '',
-                confirmNewPassword: ''
+                name: user.name,
+                surname: user.surname
             })
         }
-    }, [passwordChangeSuccess])
+    }, [user])
+
 
     const handleSubmit = () => {
-        const {oldPassword, newPassword, confirmNewPassword} = values
+        const {name, surname} = values
         let valid = true
 
-        let oldPasswordMessage = null
-        let newPasswordMessage = null
-        let confirmPasswordMessage = null
-
-        if (!oldPassword.trim()) {
-            oldPasswordMessage = 'Old password is required'
-            valid = false
-        } else if (oldPassword.length < 6) {
-            oldPasswordMessage = 'Password must contain at least 6 characters'
+        if (!name.trim()) {
             valid = false
         }
 
-        if (!newPassword.trim()) {
-            newPasswordMessage = 'Password is required'
-            valid = false
-        } else if (newPassword.length < 6) {
-            newPasswordMessage = 'Password must contain at least 6 characters'
-            valid = false
-        }
-
-        if (!confirmNewPassword.trim()) {
-            confirmPasswordMessage = 'Password confirmation is required'
-            valid = false
-        } else if (newPassword !== confirmNewPassword) {
-            confirmPasswordMessage = 'Passwords didn\'t match'
+        if (!surname.trim()) {
             valid = false
         }
 
         setErrors({
-            oldPassword: oldPasswordMessage,
-            newPassword: newPasswordMessage,
-            confirmNewPassword: confirmPasswordMessage
+            name: name.trim() ? null : 'Name is required',
+            surname: surname.trim() ? null : 'Surname is required',
         })
 
         if (valid) {
-            changePassword(values)
+            changeInfo(values)
+            getUser()
         }
     }
 
@@ -86,22 +64,19 @@ function ChangePassword({onHide, show, changePassword, passwordChangeSuccess}) {
 
     const clearValues = () => {
         setValues({
-            oldPassword: '',
-            newPassword: '',
-            confirmNewPassword: ''
+            name: user.name,
+            surname: user.surname
         })
         setErrors({
-            oldPassword: null,
-            newPassword: null,
-            confirmNewPassword: null
+            name: null,
+            surname: null
         })
         onHide()
     }
 
     const params = [
-        {name: 'oldPassword', placeholder: 'Old password'},
-        {name: 'newPassword', placeholder: 'New password'},
-        {name: 'confirmNewPassword', placeholder: 'Confirm password'},
+        {name: 'name', placeholder: 'Name'},
+        {name: 'surname', placeholder: 'Surname'}
     ]
 
     return (
@@ -112,7 +87,7 @@ function ChangePassword({onHide, show, changePassword, passwordChangeSuccess}) {
                centered>
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
-                    Change password
+                    Change info
                 </Modal.Title>
             </Modal.Header>
 
@@ -120,7 +95,7 @@ function ChangePassword({onHide, show, changePassword, passwordChangeSuccess}) {
                 {params.map(({name, placeholder}) => {
                     return <Form.Group key={name}>
                         <Form.Control className={errors[name] ? styles.invalid : ''}
-                                      type='password'
+                                      type='text'
                                       name={name}
                                       placeholder={placeholder}
                                       value={values[name]}
@@ -146,12 +121,14 @@ function ChangePassword({onHide, show, changePassword, passwordChangeSuccess}) {
 
 const mapStateToProps = (state) => {
     return {
-        passwordChangeSuccess: state.passwordChangeSuccess
+        user: state.user,
+        infoChangeSuccess: state.infoChangeSuccess
     }
 }
 
 const mapDispatchToProps = {
-    changePassword
+    changeInfo,
+    getUser
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChangePassword)
+export default connect(mapStateToProps, mapDispatchToProps)(UpdateInfo)

@@ -31,16 +31,16 @@ function Register({register}) {
         let passwordMessage = null
         let confirmPasswordMessage = null
 
-        if (!name) {
+        if (!name.trim()) {
             valid = false
         }
 
-        if (!surname) {
+        if (!surname.trim()) {
             valid = false
         }
 
         const emailReg = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/
-        if (!email) {
+        if (!email.trim()) {
             emailMessage = 'Email is required'
             valid = false
         } else if (!emailReg.test(email)) {
@@ -48,7 +48,7 @@ function Register({register}) {
             valid = false
         }
 
-        if (!password) {
+        if (!password.trim()) {
             passwordMessage = 'Password is required'
             valid = false
         } else if (password.length < 6) {
@@ -56,7 +56,7 @@ function Register({register}) {
             valid = false
         }
 
-        if (!confirmPassword) {
+        if (!confirmPassword.trim()) {
             confirmPasswordMessage = 'Password confirmation is required'
             valid = false
         } else if (password !== confirmPassword) {
@@ -65,8 +65,8 @@ function Register({register}) {
         }
 
         setErrors({
-            name: name ? null : 'Name is required',
-            surname: surname ? null : 'Surname is required',
+            name: name.trim() ? null : 'Name is required',
+            surname: surname.trim() ? null : 'Surname is required',
             email: emailMessage,
             password: passwordMessage,
             confirmPassword: confirmPasswordMessage

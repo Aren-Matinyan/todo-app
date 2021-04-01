@@ -10,6 +10,7 @@ const defaultState = {
     editTasksSuccess: false,
     deleteTaskSuccess: false,
     formSentSuccess: false,
+    passwordChangeSuccess: false,
     loading: false,
     successMessage: null,
     errorMessage: null,
@@ -28,6 +29,7 @@ export default function reducer(state = defaultState, action) {
                 editTasksSuccess: false,
                 deleteTaskSuccess: false,
                 formSentSuccess: false,
+                passwordChangeSuccess: false,
                 successMessage: null,
                 errorMessage: null
             }
@@ -164,7 +166,13 @@ export default function reducer(state = defaultState, action) {
                 ...state,
                 user: action.user
             }
-
+        case actionTypes.CHANGE_PASSWORD:
+            return {
+                ...state,
+                loading: false,
+                passwordChangeSuccess: true,
+                successMessage: 'Password changed successfully'
+            }
         default:
             return state
     }

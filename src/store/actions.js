@@ -181,3 +181,16 @@ export function logout() {
             })
     }
 }
+
+export function changePassword(data) {
+    return (dispatch) => {
+        dispatch({type: actionTypes.PENDING})
+        request(`${apiHost}/user/password`, 'PUT', data)
+            .then(() => {
+                dispatch({type: actionTypes.CHANGE_PASSWORD})
+            })
+            .catch((error) => {
+                dispatch({type: actionTypes.ERROR, error: error.message})
+            })
+    }
+}

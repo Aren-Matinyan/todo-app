@@ -1,12 +1,13 @@
 import React from "react"
 
 import {connect} from 'react-redux'
-import {Navbar, Nav, Button} from "react-bootstrap"
+import {Navbar, Nav} from "react-bootstrap"
 import {NavLink} from "react-router-dom"
 import styles from './nav-menu.module.css'
 import {logout} from "../../store/actions"
+import Settings from "../settings/settings"
 
-const NavMenu = ({isAuthenticated, user, logout}) => {
+const NavMenu = ({isAuthenticated}) => {
     return (
         <Navbar bg="dark" variant="dark">
             <NavLink to='/' exact
@@ -31,14 +32,7 @@ const NavMenu = ({isAuthenticated, user, logout}) => {
                     Contact us
                 </NavLink>
 
-                {isAuthenticated &&
-                <Button onClick={logout}>
-                    Log Out
-                </Button>
-                }
-
-                {user ? <span>{`${user.name} ${user.surname}`}</span> : null}
-
+                {isAuthenticated && <Settings/>}
             </Nav>
         </Navbar>
     )
@@ -47,7 +41,6 @@ const NavMenu = ({isAuthenticated, user, logout}) => {
 const mapStateToProps = (state) => {
     return {
         isAuthenticated: state.isAuthenticated,
-        user: state.user
     }
 }
 

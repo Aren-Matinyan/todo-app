@@ -75,12 +75,12 @@ function Contact({sendContactForm, formSentSuccess}) {
     }
 
     return (
-        <div>
+        <div className={styles.main}>
             <Container>
-                <Row className='justify-content-center mt-5'>
+                <Row className='justify-content-center'>
                     <Col xs={12} sm={8} md={6}>
                         <Form>
-                            <h2 className='text-center'>Contact us</h2>
+                            <h2 className={styles.heading}>Contact us</h2>
                             <Form.Group>
                                 <Form.Control className={errors.name ? styles.invalid : ''}
                                               type="text"
@@ -118,7 +118,7 @@ function Contact({sendContactForm, formSentSuccess}) {
                                 </Form.Text>
                             </Form.Group>
                             <div className='text-center'>
-                                <Button variant="outline-primary"
+                                <Button variant="primary"
                                         className={styles.submitButton}
                                         onClick={handleSubmit}>
                                     Send

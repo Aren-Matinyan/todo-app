@@ -1,10 +1,17 @@
 .header {
     color: darkturquoise;
     font-style: italic;
-    font-size: 30px;
+    font-size: 25px;
+    margin-left: 0;
+    vertical-align: middle;
 }
 
 .header:hover {
     text-decoration: none;
     color: tomato;
+}
+
+.hamburger {
+    padding: 0 !important;
+    margin-right: 5px !important;
 }

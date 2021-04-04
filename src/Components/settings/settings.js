@@ -50,7 +50,8 @@ const Settings = ({user, logout, passwordChangeSuccess, infoChangeSuccess}) => {
                     <IconButton aria-label="more"
                                 aria-controls="long-menu"
                                 aria-haspopup="true"
-                                onClick={handleClick}>
+                                onClick={handleClick}
+                                style={{padding: 0}}>
                         <MoreVertIcon/>
                     </IconButton>
                     <Menu id="long-menu"
@@ -61,7 +62,7 @@ const Settings = ({user, logout, passwordChangeSuccess, infoChangeSuccess}) => {
                           PaperProps={{
                               style: {
                                   maxHeight: ITEM_HEIGHT * 4.5,
-                                  width: '20ch',
+                                  width: '20ch'
                               },
                           }}>
                         <MenuItem onClick={updateInfo}>
@@ -76,7 +77,7 @@ const Settings = ({user, logout, passwordChangeSuccess, infoChangeSuccess}) => {
                         </MenuItem>
                     </Menu>
                 </div>
-                : ''}
+                : null}
             <ChangePassword show={changePassword}
                             onHide={() => setChangePassword(false)}/>
             <UpdateInfo show={changeInfo}

@@ -3,7 +3,7 @@ import React, {Component, createRef} from 'react'
 import moment from "moment"
 import PropTypes from 'prop-types'
 import {connect} from "react-redux"
-import {addTask} from "../store/actions"
+import {addTask} from "../../store/actions"
 import {Button, FormControl, Modal} from 'react-bootstrap'
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
@@ -24,9 +24,7 @@ class AddItem extends Component {
         this.titleRef.current.focus()
     }
 
-    handleChange = (event) => {
-        const {name, value} = event.target
-
+    handleChange = ({target: {name, value}}) => {
         this.setState({
             [name]: value
         })
@@ -66,44 +64,41 @@ class AddItem extends Component {
         const {onClose} = this.props
 
         return (
-            <>
-                <Modal className={this.props.className}
-                       show={true}
-                       onHide={onClose}
-                       size="lg"
-                       aria-labelledby="contained-modal-title-vcenter"
-                       centered>
-                    <Modal.Header closeButton>
-                        <Modal.Title id="contained-modal-title-vcenter">
-                            Add new Task
-                        </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <FormControl placeholder="Title"
-                                     onChange={this.handleChange}
-                                     name='title'
-                                     onKeyPress={this.handleKeyDown}
-                                     className='mb-3'
-                                     ref={this.titleRef}/>
-                        <FormControl placeholder="Description"
-                                     as="textarea"
-                                     rows={5}
-                                     name='description'
-                                     onChange={this.handleChange}
-                                     className='mb-3'/>
-                        <DatePicker minDate={new Date()}
-                                    selected={this.state.date}
-                                    onChange={this.handleChangeDate}/>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={this.handleSubmit}
-                                variant='success'>
-                            Add
-                        </Button>
-                        <Button onClick={onClose}>Cancel</Button>
-                    </Modal.Footer>
-                </Modal>
-            </>
+            <Modal show={true}
+                   onHide={onClose}
+                   size="lg"
+                   aria-labelledby="contained-modal-title-vcenter"
+                   centered>
+                <Modal.Header closeButton>
+                    <Modal.Title id="contained-modal-title-vcenter">
+                        Add new Task
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <FormControl placeholder="Title"
+                                 onChange={this.handleChange}
+                                 name='title'
+                                 onKeyPress={this.handleKeyDown}
+                                 className='mb-3'
+                                 ref={this.titleRef}/>
+                    <FormControl placeholder="Description"
+                                 as="textarea"
+                                 rows={5}
+                                 name='description'
+                                 onChange={this.handleChange}
+                                 className='mb-3'/>
+                    <DatePicker minDate={new Date()}
+                                selected={this.state.date}
+                                onChange={this.handleChangeDate}/>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={this.handleSubmit}
+                            variant='success'>
+                        Add
+                    </Button>
+                    <Button onClick={onClose}>Cancel</Button>
+                </Modal.Footer>
+            </Modal>
         )
     }
 }

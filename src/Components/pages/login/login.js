@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-import {login} from "../../store/actions"
+import {login} from "../../../store/actions"
 import {connect} from "react-redux"
 import {Form, Button, Container, Row, Col} from 'react-bootstrap'
 import styles from './login.module.css'
@@ -20,8 +20,8 @@ function Login(props) {
         const {email, password} = values
 
         setErrors({
-            email: email ? null : 'Email is required',
-            password: password ? null : 'Password is required'
+            email: email.trim() ? null : 'Email is required',
+            password: password.trim() ? null : 'Password is required'
         })
 
         if (email && password) {
@@ -41,6 +41,12 @@ function Login(props) {
         })
     }
 
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            handleSubmit()
+        }
+    }
+
     return (
         <div className={styles.main}>
             <Container>
@@ -54,6 +60,7 @@ function Login(props) {
                                               name="email"
                                               placeholder="Enter email"
                                               value={values.email}
+                                              onKeyPress={handleKeyDown}
                                               onChange={handleChange}/>
                                 <Form.Text className="text-danger">
                                     {errors.email}
@@ -63,10 +70,11 @@ function Login(props) {
                             <Form.Group>
                                 <Form.Control className={errors.password ? styles.invalid : ''}
                                               type="password"
+                                              name="password"
                                               placeholder="Password"
                                               value={values.password}
-                                              onChange={handleChange}
-                                              name="password"/>
+                                              onKeyPress={handleKeyDown}
+                                              onChange={handleChange}/>
                                 <Form.Text className="text-danger">
                                     {errors.password}
                                 </Form.Text>

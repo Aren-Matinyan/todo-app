@@ -1,13 +1,17 @@
 import * as actionTypes from './action-types'
-import {checkLoginStatus} from "../../helpers/auth";
+import {checkLoginStatus} from "../helpers/auth";
 
 const defaultState = {
     tasks: [],
     task: null,
+    user: null,
     addTaskSuccess: false,
     editTaskSuccess: false,
     editTasksSuccess: false,
     deleteTaskSuccess: false,
+    formSentSuccess: false,
+    passwordChangeSuccess: false,
+    infoChangeSuccess: false,
     loading: false,
     successMessage: null,
     errorMessage: null,
@@ -25,6 +29,9 @@ export default function reducer(state = defaultState, action) {
                 editTaskSuccess: false,
                 editTasksSuccess: false,
                 deleteTaskSuccess: false,
+                formSentSuccess: false,
+                passwordChangeSuccess: false,
+                infoChangeSuccess: false,
                 successMessage: null,
                 errorMessage: null
             }
@@ -146,7 +153,35 @@ export default function reducer(state = defaultState, action) {
             return {
                 ...state,
                 loading: false,
-                isAuthenticated: false
+                isAuthenticated: false,
+                user: null,
+            }
+        case actionTypes.SEND_CONTACT_FORM:
+            return {
+                ...state,
+                loading: false,
+                formSentSuccess: true,
+                successMessage: 'Form sent successfully'
+            }
+        case actionTypes.GET_USER:
+            return {
+                ...state,
+                loading: false,
+                user: action.user
+            }
+        case actionTypes.CHANGE_PASSWORD:
+            return {
+                ...state,
+                loading: false,
+                passwordChangeSuccess: true,
+                successMessage: 'Password changed successfully'
+            }
+        case actionTypes.CHANGE_INFO:
+            return {
+                ...state,
+                loading: false,
+                infoChangeSuccess: true,
+                successMessage: 'Information changed successfully'
             }
 
         default:

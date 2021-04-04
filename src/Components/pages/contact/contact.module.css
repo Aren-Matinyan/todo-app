@@ -1,5 +1,15 @@
+.main {
+    margin-top: 30px;
+}
+
+.heading {
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
 .submitButton {
-    width: 40%;
+    width: 60%;
 }
 
 .invalid, .invalid:focus {

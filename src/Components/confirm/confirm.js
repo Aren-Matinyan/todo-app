@@ -6,13 +6,11 @@ import PropTypes from 'prop-types'
 function Confirm({onClose, onConfirm, count}) {
 
     return (
-        <Modal
-            show={true}
-            onHide={onClose}
-            size="lg"
-            aria-labelledby="contained-modal-title-vcenter"
-            centered
-        >
+        <Modal show={true}
+               onHide={onClose}
+               size="lg"
+               aria-labelledby="contained-modal-title-vcenter"
+               centered>
             <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
                     Are you sure you want to delete {count} task{count > 1 ? "s" : ""}?
@@ -20,9 +18,9 @@ function Confirm({onClose, onConfirm, count}) {
             </Modal.Header>
             <Modal.Footer>
                 <Button onClick={onConfirm}
-                        variant="outline-danger">Ok</Button>
+                        variant="danger">Ok</Button>
                 <Button onClick={onClose}
-                        variant="outline-success">Cancel</Button>
+                        variant="success">Cancel</Button>
             </Modal.Footer>
         </Modal>
     )

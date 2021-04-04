@@ -7,7 +7,7 @@ import SearchTask from "../../search-task/search-task"
 import Progress from "../../progress/progress"
 import PropTypes from "prop-types"
 import {connect} from 'react-redux'
-import {getTasks, deleteTask, deleteTasks} from '../../store/actions'
+import {getTasks, deleteTask, deleteTasks, getUser} from '../../../store/actions'
 import {Button, Container, Row, Col} from "react-bootstrap"
 import styles from './todo.module.css'
 
@@ -23,6 +23,7 @@ class Todo extends Component {
 
     componentDidMount() {
         this.props.getTasks()
+        this.props.getUser()
     }
 
     componentDidUpdate(prevProps) {
@@ -83,7 +84,6 @@ class Todo extends Component {
     }
 
     render() {
-
         const {showConfirm, selectedTask, openNewTaskModal} = this.state
         const {tasks} = this.props
 
@@ -91,36 +91,40 @@ class Todo extends Component {
             <>
                 <Container className={styles.todoApp}>
                     <Row>
-                        <Col>
+                        <Col xs={12}>
                             <Progress/>
                         </Col>
                     </Row>
                     <Row>
-                        <Col>
+                        <Col xs={12}>
                             <SearchTask/>
                         </Col>
                     </Row>
 
-                    <Button variant="outline-primary"
+                    <Button variant="primary"
                             onClick={this.toggleNewTaskModal}
                             disabled={!!selectedTask.size}>
                         Add Task
                     </Button>
-                    <Button variant='outline-warning'
-                            className='float-right'
+
+                    <Button variant='warning'
+                            className='float-right  mr-2'
                             onClick={this.deSelectAll}>Deselect all</Button>
-                    <Button variant='outline-warning'
+                    <Button variant='warning'
                             className='float-right mr-2'
                             onClick={this.selectAll}>Select all</Button>
 
                     <TodoList tasks={tasks}
                               selectedTask={selectedTask}
                               checkItem={this.checkItem}/>
-                    <Button variant="outline-danger float-right"
+
+                    <Button variant="danger float-right"
                             disabled={!selectedTask.size}
-                            onClick={this.toggleConfirm}>
+                            onClick={this.toggleConfirm}
+                            className='mt-1 mb-1'>
                         Remove selected
                     </Button>
+
                 </Container>
                 {openNewTaskModal && <AddItem onClose={this.toggleNewTaskModal}/>}
                 {showConfirm && <Confirm onClose={this.toggleConfirm}
@@ -152,6 +156,7 @@ const mapDispatchToProps = {
     getTasks,
     deleteTask,
     deleteTasks,
+    getUser
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Todo)

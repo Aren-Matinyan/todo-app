@@ -8,6 +8,7 @@ import Register from "../pages/register/register"
 import Login from "../pages/login/login"
 import NavMenu from "../nav-menu/nav-menu"
 import SingleTask from "../pages/single-task/single-task"
+import Footer from "../footer/footer"
 import Spinner from "../spinner/spinner"
 import AuthRoute from '../auth-route'
 import {connect} from 'react-redux'
@@ -16,7 +17,7 @@ import {Router, Switch, Route, Redirect} from "react-router-dom"
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {ToastContainer, toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-// import styles from './app.module.css'
+import styles from './app.module.css'
 
 const toastProps = {
     position: "bottom-left",
@@ -39,7 +40,7 @@ function App({loading, successMessage, errorMessage}) {
     }, [successMessage, errorMessage])
 
     return (
-        <div>
+        <div className={styles.page}>
             <Router history={history}>
                 <NavMenu/>
                 <Switch>
@@ -48,11 +49,11 @@ function App({loading, successMessage, errorMessage}) {
                                type='private'
                                exact/>
                     <Route path='/about'
-                               component={About}
-                               exact/>
+                           component={About}
+                           exact/>
                     <Route path='/contact'
-                               component={Contact}
-                               exact/>
+                           component={Contact}
+                           exact/>
                     <AuthRoute path='/task/:taskId'
                                component={SingleTask}
                                type='private'
@@ -69,8 +70,11 @@ function App({loading, successMessage, errorMessage}) {
                     <Route path='/not-found'
                            component={NotFound}
                            exact/>
-                    <Redirect to='not-found'/>
+                    <Redirect to='/not-found'/>
                 </Switch>
+                <div className={styles.footer}>
+                    <Footer/>
+                </div>
             </Router>
             {loading && <Spinner/>}
             <ToastContainer/>

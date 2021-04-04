@@ -1,7 +1,5 @@
 import decode from 'jwt-decode'
-import {store} from "../Components/store/store"
-import {LOGOUT} from "../Components/store/action-types"
-import {history} from "./history"
+import {logout} from "../store/actions"
 
 export default function requestWithoutToken(url, method = 'GET', body) {
     const config = {
@@ -58,12 +56,6 @@ export const getToken = () => {
 
 export function saveToken(token) {
     localStorage.setItem('token', JSON.stringify(token))
-}
-
-export function logout() {
-    localStorage.removeItem('token')
-    store.dispatch({type: LOGOUT})
-    history.push('login')
 }
 
 export function checkLoginStatus() {

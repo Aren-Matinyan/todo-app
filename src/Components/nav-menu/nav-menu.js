@@ -1,8 +1,7 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 
 import Settings from "../settings/settings"
 import {connect} from 'react-redux'
-import {getUser} from "../../store/actions"
 import {Link} from "react-router-dom"
 import clsx from 'clsx'
 import {makeStyles, useTheme} from '@material-ui/core/styles'
@@ -82,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-function NavMenu({isAuthenticated, getUser}) {
+function NavMenu({isAuthenticated}) {
     const classes = useStyles()
     const theme = useTheme()
     const [open, setOpen] = React.useState(false)
@@ -94,10 +93,6 @@ function NavMenu({isAuthenticated, getUser}) {
     const handleDrawerClose = () => {
         setOpen(false)
     }
-
-    useEffect(() => {
-        getUser()
-    }, [getUser])
 
     return (
         <div className={classes.root}>
@@ -112,7 +107,7 @@ function NavMenu({isAuthenticated, getUser}) {
                                     aria-label="open drawer"
                                     onClick={handleDrawerOpen}
                                     edge="start"
-                                    className={clsx(classes.menuButton, open && classes.hide)}>
+                                    className={`${clsx(classes.menuButton, open && classes.hide)} ${styles.hamburger}`}>
                             <MenuIcon/>
                         </IconButton>
                         <Link to="/" exact="true" className={styles.header}>
@@ -175,12 +170,9 @@ function NavMenu({isAuthenticated, getUser}) {
 
 const mapStateToProps = (state) => {
     return {
-        isAuthenticated: state.isAuthenticated
+        isAuthenticated: state.isAuthenticated,
+        user: state.user
     }
 }
 
-const mapDispatchToProps = {
-    getUser
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(NavMenu)
+export default connect(mapStateToProps)(NavMenu)

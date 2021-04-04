@@ -93,12 +93,18 @@ const SearchTask = ({getTasks}) => {
         setDrawer({...drawer, right: open})
     }
 
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            handleSubmit()
+        }
+    }
+
     return (
         <div className='mb-3 mt-3'>
             <InputGroup>
                 <FormControl placeholder="Search..."
-                             onChange={(event) => setSearch(event.target.value)}/>
-
+                             onChange={(event) => setSearch(event.target.value)}
+                             onKeyPress={handleKeyDown}/>
                 <InputGroup.Append>
                     <Button variant="outline-secondary"
                             onClick={handleSubmit}>

@@ -105,7 +105,6 @@ const SearchTask = ({getTasks}) => {
                 <FormControl placeholder="Search..."
                              onChange={(event) => setSearch(event.target.value)}
                              onKeyPress={handleKeyDown}/>
-
                 <InputGroup.Append>
                     <Button variant="outline-secondary"
                             onClick={handleSubmit}>

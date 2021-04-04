@@ -19,6 +19,7 @@
         transform: rotate(360deg);
     }
 }
+
 @keyframes ldsDoubleRing_reverse {
     0% {
         -webkit-transform: rotate(0);
@@ -29,6 +30,7 @@
         transform: rotate(-360deg);
     }
 }
+
 @-webkit-keyframes ldsDoubleRing_reverse {
     0% {
         -webkit-transform: rotate(0);
@@ -47,6 +49,7 @@
 .ldsDoubleRing {
     position: relative;
 }
+
 .ldsDoubleRing div {
     position: absolute;
     width: 160px;
@@ -59,6 +62,7 @@
     -webkit-animation: ldsDoubleRing 1.5s linear infinite;
     animation: ldsDoubleRing 1.5s linear infinite;
 }
+
 .ldsDoubleRing div:nth-child(2) {
     width: 140px;
     height: 140px;
@@ -68,6 +72,7 @@
     -webkit-animation: ldsDoubleRing_reverse 1.5s linear infinite;
     animation: ldsDoubleRing_reverse 1.5s linear infinite;
 }
+
 .ldsDoubleRing {
     width: 77px !important;
     height: 77px !important;
@@ -76,7 +81,7 @@
 }
 
 .spinner {
-    background-color: rgba(0,0,0, 0.4);
+    background-color: rgba(0, 0, 0, 0.4);
     width: 100vw;
     height: 100vh;
     top: 0;

@@ -89,6 +89,12 @@ function Register({register}) {
         })
     }
 
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            handleSubmit()
+        }
+    }
+
     const params = [
         {name: 'name', type: 'text', placeholder: 'Enter your name'},
         {name: 'surname', type: 'text', placeholder: 'Enter your surname'},
@@ -98,39 +104,38 @@ function Register({register}) {
     ]
 
     return (
-        <div>
-            <Container>
-                <Row className="justify-content-center">
-                    <Col xs={12} sm={8} md={6}>
-                        <Form>
-                            <h3 className={styles.header}>Sign Up</h3>
-                            <h6 className={styles.message}>Create your account. It's free and only takes a minute.</h6>
+        <Container>
+            <Row className="justify-content-center">
+                <Col xs={12} sm={8} md={6}>
+                    <Form>
+                        <h3 className={styles.header}>Sign Up</h3>
+                        <h6 className={styles.message}>Create your account. It's free and only takes a minute.</h6>
 
-                            {params.map(({name, type, placeholder}) => {
-                                return <Form.Group key={name}>
-                                    <Form.Control className={errors[name] ? styles.invalid : ''}
-                                                  type={type}
-                                                  name={name}
-                                                  placeholder={placeholder}
-                                                  value={values[name]}
-                                                  onChange={handleChange}/>
-                                    <Form.Text className="text-danger">
-                                        {errors[name]}
-                                    </Form.Text>
-                                </Form.Group>
-                            })}
+                        {params.map(({name, type, placeholder}) => {
+                            return <Form.Group key={name}>
+                                <Form.Control className={errors[name] ? styles.invalid : ''}
+                                              type={type}
+                                              name={name}
+                                              placeholder={placeholder}
+                                              value={values[name]}
+                                              onKeyPress={handleKeyDown}
+                                              onChange={handleChange}/>
+                                <Form.Text className="text-danger">
+                                    {errors[name]}
+                                </Form.Text>
+                            </Form.Group>
+                        })}
 
-                            <Button variant="primary"
-                                    className={styles.submitButton}
-                                    onClick={handleSubmit}>
-                                Register Now
-                            </Button>
-                            <h6 className={styles.signIn}>Already have an account? <Link to='/login'>Sign in</Link></h6>
-                        </Form>
-                    </Col>
-                </Row>
-            </Container>
-        </div>
+                        <Button variant="primary"
+                                className={styles.submitButton}
+                                onClick={handleSubmit}>
+                            Register Now
+                        </Button>
+                        <h6 className={styles.signIn}>Already have an account? <Link to='/login'>Sign in</Link></h6>
+                    </Form>
+                </Col>
+            </Row>
+        </Container>
     )
 }
 

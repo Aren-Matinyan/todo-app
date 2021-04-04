@@ -1,12 +1,3 @@
-.todoTask {
-    cursor: pointer;
-    user-select: none;
-}
-
-.done {
-    text-decoration: line-through;
-}
-
 .todoCard {
     margin: 5px 0;
 }

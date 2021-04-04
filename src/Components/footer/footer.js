@@ -1,4 +1,4 @@
-import React from "react"
+import React, {memo} from "react"
 
 import githubLogo from '../../assets/github.png'
 import linkedinLogo from '../../assets/linkedin.png'
@@ -6,10 +6,11 @@ import linkedinLogo from '../../assets/linkedin.png'
 import styles from './footer.module.css'
 
 const Footer = () => {
+
     return (
         <div className={styles.footer}>
             <a href="https://github.com/Aren-Matinyan"
-                target={'_blank'} rel="noreferrer">
+               target={'_blank'} rel="noreferrer">
                 <img src={githubLogo} alt="githubLogo"
                      className={styles.logo}/>
             </a>
@@ -22,4 +23,4 @@ const Footer = () => {
     )
 }
 
-export default Footer
+export default memo(Footer)

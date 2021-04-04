@@ -4,7 +4,6 @@ import TodoListItem from "../todo-list-item/todo-list-item"
 import PropTypes from 'prop-types'
 import {connect} from "react-redux"
 import {Row, Col} from 'react-bootstrap'
-import styles from './todo-list.module.css'
 
 const TodoList = ({tasks, checkItem, selectedTask}) => {
 
@@ -20,7 +19,7 @@ const TodoList = ({tasks, checkItem, selectedTask}) => {
     })
 
     return (
-        <Row className={styles.todoList}>
+        <Row>
             {elements}
         </Row>
     )

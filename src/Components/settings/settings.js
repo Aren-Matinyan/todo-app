@@ -4,11 +4,16 @@ import ChangePassword from "./change-password/change-password"
 import UpdateInfo from "./update-info/update-info"
 import {connect} from "react-redux"
 import {logout} from "../../store/actions"
-import {NavDropdown} from "react-bootstrap"
+import IconButton from '@material-ui/core/IconButton'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
+import Divider from "@material-ui/core/Divider"
 
 const Settings = ({user, logout, passwordChangeSuccess, infoChangeSuccess}) => {
     const [changePassword, setChangePassword] = useState(false)
     const [changeInfo, setChangeInfo] = useState(false)
+    const [anchorEl, setAnchorEl] = useState(null)
 
     useEffect(() => {
         if (passwordChangeSuccess) {
@@ -22,26 +27,61 @@ const Settings = ({user, logout, passwordChangeSuccess, infoChangeSuccess}) => {
         }
     }, [infoChangeSuccess])
 
+    const updateInfo = () => {
+        setAnchorEl(null)
+        setChangeInfo(true)
+    }
+
+    const updatePassword = () => {
+        setAnchorEl(null)
+        setChangePassword(true)
+    }
+
+    const open = Boolean(anchorEl)
+    const handleClick = (event) => {setAnchorEl(event.currentTarget)}
+    const handleClose = () => {setAnchorEl(null)}
+    const ITEM_HEIGHT = 48
+
     return (
-        <div>
-            <NavDropdown title={user ? <span>{`${user.name} ${user.surname}`}</span> : ''}
-                         id="basic-nav-dropdown">
-                <NavDropdown.Item onClick={() => setChangeInfo(true)}>
-                    Update info
-                </NavDropdown.Item>
-                <NavDropdown.Item onClick={() => setChangePassword(true)}>
-                    Account security
-                </NavDropdown.Item>
-                <NavDropdown.Divider/>
-                <NavDropdown.Item onClick={logout}>
-                    Sign Out
-                </NavDropdown.Item>
-            </NavDropdown>
+        <>
+            {user ?
+                <div>
+                    {`${user.name} ${user.surname}`}
+                    <IconButton aria-label="more"
+                                aria-controls="long-menu"
+                                aria-haspopup="true"
+                                onClick={handleClick}>
+                        <MoreVertIcon/>
+                    </IconButton>
+                    <Menu id="long-menu"
+                          anchorEl={anchorEl}
+                          keepMounted
+                          open={open}
+                          onClose={handleClose}
+                          PaperProps={{
+                              style: {
+                                  maxHeight: ITEM_HEIGHT * 4.5,
+                                  width: '20ch',
+                              },
+                          }}>
+                        <MenuItem onClick={updateInfo}>
+                            Update info
+                        </MenuItem>
+                        <MenuItem onClick={updatePassword}>
+                            Account security
+                        </MenuItem>
+                        <Divider/>
+                        <MenuItem onClick={logout}>
+                            Sign Out
+                        </MenuItem>
+                    </Menu>
+                </div>
+                : ''}
             <ChangePassword show={changePassword}
                             onHide={() => setChangePassword(false)}/>
             <UpdateInfo show={changeInfo}
                         onHide={() => setChangeInfo(false)}/>
-        </div>
+        </>
     )
 }
 
@@ -53,8 +93,9 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = {
-    logout
-}
+const mapDispatchToProps =
+    {
+        logout
+    }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Settings)

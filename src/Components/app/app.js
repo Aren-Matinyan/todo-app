@@ -70,7 +70,7 @@ function App({loading, successMessage, errorMessage}) {
                     <Route path='/not-found'
                            component={NotFound}
                            exact/>
-                    <Redirect to='not-found'/>
+                    <Redirect to='/not-found'/>
                 </Switch>
                 <div className={styles.footer}>
                     <Footer/>

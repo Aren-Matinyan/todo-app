@@ -58,14 +58,13 @@ class EditTask extends Component {
     render() {
         const {title, description} = this.state
         const {onClose} = this.props
+
         return (
-            <Modal
-                show={true}
-                onHide={onClose}
-                size="lg"
-                aria-labelledby="contained-modal-title-vcenter"
-                centered
-            >
+            <Modal show={true}
+                   onHide={onClose}
+                   size="lg"
+                   aria-labelledby="contained-modal-title-vcenter"
+                   centered>
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
                         Edit Task
@@ -94,9 +93,9 @@ class EditTask extends Component {
 
                 <Modal.Footer>
                     <Button onClick={this.onSubmit}
-                            variant='outline-success'>Edit</Button>
+                            variant='success'>Edit</Button>
                     <Button onClick={onClose}
-                            variant='outline-primary'>Cancel</Button>
+                            variant='primary'>Cancel</Button>
                 </Modal.Footer>
             </Modal>
         )

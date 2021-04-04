@@ -64,44 +64,41 @@ class AddItem extends Component {
         const {onClose} = this.props
 
         return (
-            <>
-                <Modal className={this.props.className}
-                       show={true}
-                       onHide={onClose}
-                       size="lg"
-                       aria-labelledby="contained-modal-title-vcenter"
-                       centered>
-                    <Modal.Header closeButton>
-                        <Modal.Title id="contained-modal-title-vcenter">
-                            Add new Task
-                        </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <FormControl placeholder="Title"
-                                     onChange={this.handleChange}
-                                     name='title'
-                                     onKeyPress={this.handleKeyDown}
-                                     className='mb-3'
-                                     ref={this.titleRef}/>
-                        <FormControl placeholder="Description"
-                                     as="textarea"
-                                     rows={5}
-                                     name='description'
-                                     onChange={this.handleChange}
-                                     className='mb-3'/>
-                        <DatePicker minDate={new Date()}
-                                    selected={this.state.date}
-                                    onChange={this.handleChangeDate}/>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button onClick={this.handleSubmit}
-                                variant='success'>
-                            Add
-                        </Button>
-                        <Button onClick={onClose}>Cancel</Button>
-                    </Modal.Footer>
-                </Modal>
-            </>
+            <Modal show={true}
+                   onHide={onClose}
+                   size="lg"
+                   aria-labelledby="contained-modal-title-vcenter"
+                   centered>
+                <Modal.Header closeButton>
+                    <Modal.Title id="contained-modal-title-vcenter">
+                        Add new Task
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <FormControl placeholder="Title"
+                                 onChange={this.handleChange}
+                                 name='title'
+                                 onKeyPress={this.handleKeyDown}
+                                 className='mb-3'
+                                 ref={this.titleRef}/>
+                    <FormControl placeholder="Description"
+                                 as="textarea"
+                                 rows={5}
+                                 name='description'
+                                 onChange={this.handleChange}
+                                 className='mb-3'/>
+                    <DatePicker minDate={new Date()}
+                                selected={this.state.date}
+                                onChange={this.handleChangeDate}/>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={this.handleSubmit}
+                            variant='success'>
+                        Add
+                    </Button>
+                    <Button onClick={onClose}>Cancel</Button>
+                </Modal.Footer>
+            </Modal>
         )
     }
 }

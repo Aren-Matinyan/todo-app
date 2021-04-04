@@ -118,7 +118,7 @@ const SearchTask = ({getTasks}) => {
                     open={drawer.right}
                     onClose={() => toggleDrawer(false)}>
                 <DropdownButton as={InputGroup.Prepend}
-                                variant="outline-secondary"
+                                variant="warning"
                                 title={status.value ? status.label : "Status"}
                                 id="input-group-dropdown-2"
                                 className='m-2'>
@@ -132,7 +132,7 @@ const SearchTask = ({getTasks}) => {
                 </DropdownButton>
 
                 <DropdownButton as={InputGroup.Prepend}
-                                variant="outline-secondary"
+                                variant="warning"
                                 title={sort.value ? sort.label : "Sort"}
                                 id="input-group-dropdown-2"
                                 className='m-2'>
@@ -146,10 +146,11 @@ const SearchTask = ({getTasks}) => {
                 </DropdownButton>
 
                 {dateOptions.map((option, index) => (
-                    <div key={index} className='m-1'>
+                    <div key={index} className='m-1 red-border'>
                         <div>{option.label}</div>
                         <DatePicker selected={dates[option.value]}
-                                    onChange={(value) => handleChangeDate(value, option.value)}/>
+                                    onChange={(value) => handleChangeDate(value, option.value)}
+                                    isClearable/>
                     </div>
                 ))}
 

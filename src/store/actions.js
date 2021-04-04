@@ -171,7 +171,7 @@ export function logout() {
 
     return (dispatch) => {
         dispatch({type: actionTypes.PENDING})
-        request(`${apiHost}/user/sign-out`, 'POST',{jwt: parsed.jwt})
+        request(`${apiHost}/user/sign-out`, 'POST', {jwt: parsed.jwt})
             .then(() => {
                 localStorage.removeItem('token')
                 dispatch({type: actionTypes.LOGOUT})

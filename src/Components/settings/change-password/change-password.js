@@ -98,6 +98,12 @@ function ChangePassword({onHide, show, changePassword, passwordChangeSuccess}) {
         onHide()
     }
 
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            handleSubmit()
+        }
+    }
+
     const params = [
         {name: 'oldPassword', placeholder: 'Old password'},
         {name: 'newPassword', placeholder: 'New password'},
@@ -124,6 +130,7 @@ function ChangePassword({onHide, show, changePassword, passwordChangeSuccess}) {
                                       name={name}
                                       placeholder={placeholder}
                                       value={values[name]}
+                                      onKeyPress={handleKeyDown}
                                       onChange={handleChange}/>
                         <Form.Text className="text-danger">
                             {errors[name]}

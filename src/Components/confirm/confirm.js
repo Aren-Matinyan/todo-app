@@ -18,9 +18,9 @@ function Confirm({onClose, onConfirm, count}) {
             </Modal.Header>
             <Modal.Footer>
                 <Button onClick={onConfirm}
-                        variant="outline-danger">Ok</Button>
+                        variant="danger">Ok</Button>
                 <Button onClick={onClose}
-                        variant="outline-success">Cancel</Button>
+                        variant="success">Cancel</Button>
             </Modal.Footer>
         </Modal>
     )

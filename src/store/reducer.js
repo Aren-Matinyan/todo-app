@@ -166,6 +166,7 @@ export default function reducer(state = defaultState, action) {
         case actionTypes.GET_USER:
             return {
                 ...state,
+                loading: false,
                 user: action.user
             }
         case actionTypes.CHANGE_PASSWORD:

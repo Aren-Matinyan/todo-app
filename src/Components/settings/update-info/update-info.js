@@ -26,7 +26,6 @@ function UpdateInfo({onHide, show, user, changeInfo, getUser}) {
         }
     }, [user])
 
-
     const handleSubmit = () => {
         const {name, surname} = values
         let valid = true
@@ -74,6 +73,12 @@ function UpdateInfo({onHide, show, user, changeInfo, getUser}) {
         onHide()
     }
 
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            handleSubmit()
+        }
+    }
+
     const params = [
         {name: 'name', placeholder: 'Name'},
         {name: 'surname', placeholder: 'Surname'}
@@ -99,6 +104,7 @@ function UpdateInfo({onHide, show, user, changeInfo, getUser}) {
                                       name={name}
                                       placeholder={placeholder}
                                       value={values[name]}
+                                      onKeyPress={handleKeyDown}
                                       onChange={handleChange}/>
                         <Form.Text className="text-danger">
                             {errors[name]}
